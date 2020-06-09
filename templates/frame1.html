@@ -1,0 +1,14 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>recipe</title>
+</head>
+<body>
+    <form action="{{ url_for('frame2') }}" method="POST">
+        <p>検索された条件のレシピ一覧です(テスト)</p>
+        {% for searchTitle in searchTitles %} 
+            <p><input type="submit" name="recipe" value={{ searchTitle }}></p>
+        {% endfor %}
+    </form>
+</body>
+</html>
