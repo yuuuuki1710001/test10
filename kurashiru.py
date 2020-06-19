@@ -4,7 +4,7 @@ import pymysql
 import re
 
 conn = pymysql.connect(
-                    user='root',
+                    user='admin',
                     passwd='10pan',
                     db='cook', 
                     port=3306,
@@ -70,9 +70,9 @@ def getLinks(pageURL, level, pages, pageURLs):
         try:
             recipeTime = bs.find('p', {'class':'cooking-time'}).get_text()
             recipeTime = re.sub(r'調理時間：|分|\n|\u0020', '', recipeTime)
+            recipeTime = int(recipeTime)
         except AttributeError:
             recipeTime = -1
-        recipeTime = int(recipeTime)
 
         #レシピのURLとタイトルと調理時間をデータベースに格納する
         insertUrlTitle(recipeURL, recipeTitle, recipeTime)
