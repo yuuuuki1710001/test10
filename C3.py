@@ -9,7 +9,7 @@ import MeCab #形態素解析ライブラリ
 
 #MySQLに接続する(おまじない)
 conn = pymysql.connect(
-                    user='root',
+                    user='admin',
                     passwd='10pan',
                     db='cook', 
                     port=3306,
