@@ -6,7 +6,11 @@
 <body>
     <form method="POST">
         <h1 class="recipeTitle">{{ recipeTitle }}の作り方</h1>
-        <h2>{{ recipe }}</h2>
+        <h2>材料</h2>
+        <p>{{ recipeStuff }}</p>
+        <h2>作り方</h2>
+        <p>{{ recipeToCook }}</p>
+        <button type="button" onclick="history.back()">戻る</button>
     </form>
 </body>
 </html>

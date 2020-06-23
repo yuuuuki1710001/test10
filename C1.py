@@ -7,11 +7,14 @@ app = Flask(__name__)
 def login():
     return render_template('login.html')
 
-
 @app.route('/main_frame', methods=['POST'])
 def main_frame():
     name = request.form['name'] #request.form['タグのクラス名']:タグのクラス名の内容を取得
     return render_template('main_frame.html', name=name)
+
+@app.route('/createUser', methods=['POST'])
+def createUser():
+    return render_template('createUser.html')
 
 @app.route('/favorite', methods=['POST'])
 def favorite():
@@ -27,8 +30,9 @@ def frame1():
 def frame2():
     recipeTitle = request.form['recipe']
     print(recipeTitle)
-    recipe = C4.searchTitle(recipeTitle)
-    return render_template('frame2.html', recipeTitle=recipeTitle, recipe=recipe)
+    recipeStuff, recipeToCook = C4.recipeDisplay(recipeTitle)
+    return render_template('frame2.html', recipeTitle=recipeTitle, 
+        recipeStuff=recipeStuff, recipeToCook=recipeToCook)
 
 @app.route('/history', methods=['POST'])
 def history():
