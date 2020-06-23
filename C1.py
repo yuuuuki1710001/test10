@@ -12,9 +12,9 @@ def main_frame():
     name = request.form['name'] #request.form['タグのクラス名']:タグのクラス名の内容を取得
     return render_template('main_frame.html', name=name)
 
-@app.route('/createUser', methods=['POST'])
-def createUser():
-    return render_template('createUser.html')
+@app.route('/resist', methods=['POST'])
+def resist():
+    return render_template('resist.html')
 
 @app.route('/favorite', methods=['POST'])
 def favorite():
