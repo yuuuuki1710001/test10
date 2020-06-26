@@ -4,7 +4,7 @@ import pymysql
 import re
 
 conn = pymysql.connect(
-                    user='root',
+                    user='admin',
                     passwd='10pan',
                     db='cook', 
                     port=3306,
@@ -13,23 +13,25 @@ cur = conn.cursor()
 cur.execute('USE cook')
 
 
-def insertUrlTitle(recipeURL, recipeTitle, recipeTime):
+def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3):
 
     #データベースに格納している内容を取得する
-    cur.execute('SELECT * FROM cookpages WHERE recipeURL = %s'
+    cur.execute('SELECT * FROM cookpages2 WHERE recipeURL = %s'
         'AND recipeTitle = %s'
-        'AND recipeTime = %s', (recipeURL, recipeTitle, recipeTime))
+        'AND recipeTime = %s', 
+        (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
 
-    #取得した数が0の場合はrecipeURLとrecipeTitleとrecipeTimeをデータベースに格納する
+    #取得した数が0の場合はurlとタイトル名をデータベースに格納する
     if cur.rowcount == 0:
-        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime) VALUES (%s, %s, %s)', (recipeURL, recipeTitle, recipeTime))
+        cur.execute('INSERT INTO cookpages2 (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
+        'VALUES (%s, %s, %s, %s, %s, %s)', (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
 
         #格納した情報を保存する
         conn.commit()
 
 #recipeURLをリストに格納する
 def loadPages():
-    cur.execute('SELECT * FROM cookpages')
+    cur.execute('SELECT * FROM cookpages2')
     pages = [row[0] for row in cur.fetchall()]
     return pages
 
@@ -62,9 +64,13 @@ def getLinks(pageURL, level, pages, pageURLs):
         bs = BeautifulSoup(linkhtml, 'html.parser')
 
         #レシピのタイトル名を取得する
-        recipeTitle = bs.find('p', {'class':'text-h3'}).get_text()
+        try:
+            recipeTitle = bs.find('p', {'class':'text-h3'}).get_text()
+        except AttributeError:
+            recipeTitle = ''
+        
         recipeTitle += bs.find('h1', {'class':'title text-h1'}).get_text()
-        recipeTitle = re.sub(r'\n|\u0020|\u3000', '', recipeTitle)
+        recipeTitle = re.sub(r'\n|\u0020|\u3000|レシピ・作り方', '', recipeTitle)
         print(recipeTitle)
 
         #レシピの調理時間を取得する
@@ -72,13 +78,25 @@ def getLinks(pageURL, level, pages, pageURLs):
             recipeTime = bs.find('div', {'class':'cooking-time-text'}).get_text()
             recipeTime = re.sub(r'調理時間|約|分|以上|半日|-|\n|\u0020', '', recipeTime)
             recipeTime = int(recipeTime)
-        except ValueError:
-            recipeTime = -1
         except AttributeError:
             recipeTime = -1
+        except ValueError:
+            recipeTime = -1
+        
+        #レシピの材料を取得する
+        OrderThings = []
+        for OrderThing in bs.findAll('span'):
+            OrderThing = OrderThing.get_text()
+            OrderThings.append(OrderThing)
+            if len(OrderThings) > 4:
+                break
+        
+        while len(OrderThings) < 4:
+            OrderThings.append('None')
 
         #レシピのURLとタイトルと調理時間をデータベースに格納する
-        insertUrlTitle(recipeURL, recipeTitle, recipeTime)
+        insertUrlTitle(recipeURL, recipeTitle, recipeTime, 
+            OrderThings[1], OrderThings[2], OrderThings[3])
 
         #レシピのサイトの関連ワードのURLを全て見つける
         foodStuffLinks = bs.find('div', {'class':'content'})
@@ -96,7 +114,7 @@ def getLinks(pageURL, level, pages, pageURLs):
             #上記の内容を繰り返す
             getLinks(foodStuffLink, level+1, pages, pageURLs)
 
-#検索候補ページ(材料)を豚肉からクローリングする(材料はなんでもいい)
+#検索候補ページ(材料)を野菜からクローリングする(材料はなんでもいい)
 getLinks('/categories/458', 0, loadPages(), [])
 cur.close()
 conn.close()

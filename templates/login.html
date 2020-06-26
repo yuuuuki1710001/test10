@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Cook me!へようこそ</h1>
-    <form action="{{ url_for('main_frame') }}" method="POST">
+    <form action="{{ url_for('Home') }}" method="POST">
         <div>
             <p>ユーザIDとパスワードを入力してください</p>
             <input type="text" name='name' placeholder="ユーザーID">
@@ -15,7 +15,7 @@
         </div>
         <button type="submit">ログイン</button>
     </form>
-    <form action="{{ url_for('resist') }}" method="POST">
+    <form action="{{ url_for('SignUp') }}" method="POST">
         <button type="submit">新規登録</button>
     </form>
 </body>

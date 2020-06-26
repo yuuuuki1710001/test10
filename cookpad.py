@@ -13,16 +13,21 @@ cur = conn.cursor()
 cur.execute('USE cook')
 
 
-def insertUrlTitle(recipeURL, recipeTitle):
+def insertUrlTitle(recipeURL, recipeTitle, OrderThing, OrderThing2, OrderThing3):
 
     #データベースに格納している内容を取得する
     cur.execute('SELECT * FROM cookpages WHERE recipeURL = %s'
-        'AND recipeTitle = %s', (recipeURL, recipeTitle))
+        'AND recipeTitle = %s' 
+        'AND OrderThing = %s'
+        'AND OrderThing2 = %s'
+        'AND OrderThing3 = %s', 
+        (recipeURL, recipeTitle, OrderThing, OrderThing2, OrderThing3))
 
     #取得した数が0の場合はurlとタイトル名をデータベースに格納する
     if cur.rowcount == 0:
         recipeTime = -1
-        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime) VALUES (%s, %s, %s)', (recipeURL, recipeTitle, recipeTime))
+        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
+        'VALUES (%s, %s, %s, %s, %s, %s)', (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
 
         #格納した情報を保存する
         conn.commit()
@@ -44,18 +49,18 @@ def getLinks(PageUrl, level, pages, pageURLs):
 
     #urlオープンしたhtmlファイルからレシピのリンクを全て探す
     #それらをリストに格納する
-    links = soup.findAll('a', href=re.compile('/recipe/([0-9])*$'))
-    links = [link.attrs['href'] for link in links]
+    recipeURLs = soup.findAll('a', href=re.compile('/recipe/([0-9])*$'))
+    recipeURLs = [recipeURL.attrs['href'] for recipeURL in recipeURLs]
 
     #リストに格納したレシピをfor文で1つ1つ調べる
-    for link in links:
-        if link in pages:
+    for recipeURL in recipeURLs:
+        if recipeURL in pages:
             continue
         
-        pages.append(link)
+        pages.append(recipeURL)
 
         #レシピのurlをオープンする
-        linkhtml = urlopen('https://cookpad.com{}'.format(link))
+        linkhtml = urlopen('https://cookpad.com{}'.format(recipeURL))
         bs = BeautifulSoup(linkhtml, 'html.parser')
 
         #レシピのタイトル名を取得する
@@ -63,22 +68,31 @@ def getLinks(PageUrl, level, pages, pageURLs):
         recipeTitle = re.sub(r'\n|\u0020|\u3000', '', recipeTitle)
         print(recipeTitle)
 
+        #レシピの材料を取得する
+        OrderThings = []
+        for OrderThing in bs.findAll('div', {'class':'ingredient_name'}):
+            OrderThing = OrderThing.get_text()
+            OrderThings.append(OrderThing)
+        
+        while len(OrderThings) < 3:
+            OrderThings.append('None')
+
         #レシピのurlとタイトルをデータベースに格納する
-        insertUrlTitle(link, recipeTitle)
+        insertUrlTitle(recipeURL, recipeTitle, OrderThings[0], OrderThings[1], OrderThings[2])
 
         #レシピのサイトの関連ワードのurlを全て見つける
-        foodStuffLinks = bs.findAll('a', href=re.compile('^(/search/)((?!:).)*$'))
-        foodStuffLinks = [foodStuffLink.attrs['href'] for foodStuffLink in foodStuffLinks]
+        OrderThingURLs = bs.findAll('a', href=re.compile('^(/search/)((?!:).)*$'))
+        OrderThingURLs = [OrderThingURL.attrs['href'] for OrderThingURL in OrderThingURLs]
 
 
-        for foodStuffLink in foodStuffLinks:
-            foodStuffLink = foodStuffLink.replace('/search', '')
-            if foodStuffLink in pageURLs:
+        for OrderThingURL in OrderThingURLs:
+            OrderThingURL = OrderThingURL.replace('/search', '')
+            if OrderThingURL in pageURLs:
                 continue
-            pageURLs.append(foodStuffLink)
+            pageURLs.append(OrderThingURL)
 
             #上記の内容を繰り返す
-            getLinks(foodStuffLink, level+1, pages, pageURLs)
+            getLinks(OrderThingURL, level+1, pages, pageURLs)
         
         
 

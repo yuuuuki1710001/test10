@@ -1,5 +1,9 @@
-#入力した材料や調理時間の情報を取得して，レシピ一覧を取得する
-#C3:レシピ検索部
+"""
+    (あくまでコードは例です(担当者はコードを書き直してください))
+    C3:レシピ検索部
+    Date:2020/6/26
+    purpose:レシピの検索一覧を取得する
+"""
 
 from urllib.request import urlopen #URLを開くためのライブラリ
 from urllib.error import URLError #urllibが投げる例外ライブラリ
@@ -17,11 +21,21 @@ conn = pymysql.connect(
 cur = conn.cursor()
 cur.execute('USE cook')
 
-#MeCabで入力した材料名を形態素解析する
-def cleanWords(recipeTitle):
+
+
+"""
+    FunctionName:   CleanWords
+    Date:           2020/6/26
+    Designer:
+    Function:       入力した材料名を形態素解析する
+    entry:           OrderThing  --- 入力した材料名
+    return:         words       --- 形態素解析した単語ら(list型)
+
+"""
+def CleanWords(OrderThing):
     m = MeCab.Tagger()
-    m.parse(recipeTitle)
-    node = m.parseToNode(recipeTitle) #単語と品詞の両方を解析する
+    m.parse(OrderThing)
+    node = m.parseToNode(OrderThing) #単語と品詞の両方を解析する
     words = []
     hinshi = ['動詞', '名詞', '形容詞']
     while node:
@@ -32,33 +46,109 @@ def cleanWords(recipeTitle):
         node = node.next
     return words
 
-#レシピ一覧を取得する
-def selectTitle(recipeTitle):
-    words = cleanWords(recipeTitle)
+
+    
+"""
+    FunctionName:   IngredientsInputs
+    Date:           2020/6/26
+    Designer:
+    Function:       レシピの検索候補を取得する
+    entry:          OrderThing   --- 入力した材料名
+    return:         recipeTitles --- レシピの検索候補(list型)
+"""
+def IngredientsInputs(OrderThing):
+    words = CleanWords(OrderThing)
 
     #レシピ一覧を格納するリストを用意する
-    searchTitles = []
+    recipeTitles = []
 
-    for word in words:
+    #材料が3つ入力された場合
+    if len(words) == 3:
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing2 = %s'
+            'AND OrderThing3 = %s',
+            (words[0], words[1], words[2]))
+        searchTitles = [row[1] for row in cur.fetchall()]
 
-        #cookpagesの情報をすべて取得してからrecipeTitleだけをリストに格納する
-        cur.execute('SELECT * FROM cookpages')
-        recipeTitles = [row[1] for row in cur.fetchall()] 
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing2 = %s'
+            'AND OrderThing3 = %s',
+            (words[1], words[2], words[0]))
+        searchTitles2 = [row[1] for row in cur.fetchall()]
 
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing2 = %s'
+            'AND OrderThing3 = %s',
+            (words[2], words[0], words[1]))
+        searchTitles3 = [row[1] for row in cur.fetchall()]
 
-        #レシピタイトルに、入力した材料名が含まれているかどうかを調べる
-        #含まれている場合は、レシピ一覧のリストにそのレシピタイトルを追加する
-        for recipeTitle in recipeTitles:
-            if word in recipeTitle:
-                searchTitles.append(recipeTitle)
+        recipeTitles.extend(searchTitles)
+        recipeTitles.extend(searchTitles2)
+        recipeTitles.extend(searchTitles3)
+        return recipeTitles
     
-    if searchTitles == []:
-        return
-    print(searchTitles)
+    #材料名が2つ入力された場合
+    elif len(words) == 2:
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing2 = %s',
+            (words[0], words[1]))
+        searchTitles = [row[1] for row in cur.fetchall()]
 
-    #レシピ一覧を返す
-    return searchTitles
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing2 = %s',
+            (words[1], words[0]))
+        searchTitles2 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing2 = %s'
+            'AND OrderThing3 = %s',
+            (words[0], words[1]))
+        searchTitles3 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing2 = %s'
+            'AND OrderThing3 = %s',
+            (words[1], words[0]))
+        searchTitles4 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing3 = %s',
+            (words[0], words[1]))
+        searchTitles5 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
+            'AND OrderThing3 = %s',
+            (words[1], words[0]))
+        searchTitles6 = [row[1] for row in cur.fetchall()]
+
+        recipeTitles.extend(searchTitles)
+        recipeTitles.extend(searchTitles2)
+        recipeTitles.extend(searchTitles3)
+        recipeTitles.extend(searchTitles4)
+        recipeTitles.extend(searchTitles5)
+        recipeTitles.extend(searchTitles6)
+        return recipeTitles
     
+    #材料名が1つの場合
+    elif len(words) == 1:
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s',
+            (words[0]))
+        searchTitles = [row[1] for row in cur.fetchall()]
 
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing2 = %s',
+            (words[0]))
+        searchTitles2 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE OrderThing3 = %s',
+            (words[0]))
+        searchTitles3 = [row[1] for row in cur.fetchall()]
+
+        recipeTitles.extend(searchTitles)
+        recipeTitles.extend(searchTitles2)
+        recipeTitles.extend(searchTitles3)
+        return recipeTitles
+    
+    #それ以外
+    else:
+        return recipeTitles
+    
 #cur.close()
 #conn.close()

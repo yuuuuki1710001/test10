@@ -4,7 +4,7 @@ import pymysql
 import re
 
 conn = pymysql.connect(
-                    user='root',
+                    user='admin',
                     passwd='10pan',
                     db='cook', 
                     port=3306,
@@ -13,16 +13,18 @@ cur = conn.cursor()
 cur.execute('USE cook')
 
 
-def insertUrlTitle(recipeURL, recipeTitle, recipeTime):
+def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3):
 
     #データベースに格納している内容を取得する
     cur.execute('SELECT * FROM cookpages WHERE recipeURL = %s'
         'AND recipeTitle = %s'
-        'AND recipeTime = %s', (recipeURL, recipeTitle, recipeTime))
+        'AND recipeTime = %s',
+        (recipeURL, recipeTitle, recipeTime))
 
-    #取得した数が0の場合はrecipeURLとrecipeTitleとrecipeTimeをデータベースに格納する
+    #取得した数が0の場合はurlとタイトル名をデータベースに格納する
     if cur.rowcount == 0:
-        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime) VALUES (%s, %s, %s)', (recipeURL, recipeTitle, recipeTime))
+        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
+        'VALUES (%s, %s, %s, %s, %s, %s)', (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
 
         #格納した情報を保存する
         conn.commit()
@@ -74,25 +76,34 @@ def getLinks(pageURL, level, pages, pageURLs):
         except AttributeError:
             recipeTime = -1
 
+        #レシピの材料を取得する
+        OrderThings = []
+        for OrderThing in bs.findAll('span', {'class':'ingredient-name'}):
+            OrderThing = OrderThing.get_text()
+            OrderThings.append(OrderThing)
+        while len(OrderThings) < 3:
+            OrderThings.append('None')
+
         #レシピのURLとタイトルと調理時間をデータベースに格納する
-        insertUrlTitle(recipeURL, recipeTitle, recipeTime)
+        insertUrlTitle(recipeURL, recipeTitle, recipeTime, 
+            OrderThings[0], OrderThings[1], OrderThings[2])
 
         #レシピのサイトの関連ワードのURLを全て見つける
-        foodStuffLinks = bs.findAll('a', href=re.compile('/video_categories/'))
-        foodStuffLinks = [foodStuffLink.attrs['href'] for foodStuffLink in foodStuffLinks]
+        OrderThingURLs = bs.findAll('a', href=re.compile('/video_categories/'))
+        OrderThingURLs = [OrderThingURL.attrs['href'] + '?page=15' for OrderThingURL in OrderThingURLs]
 
-        for foodStuffLink in foodStuffLinks:
+        for OrderThingURL in OrderThingURLs:
 
             #一度クローリングした関連ワードのURLは無視する
             #まだクローリングしていない関連ワードのURLをpageURLリストに格納する
-            if foodStuffLink in pageURLs:
+            if OrderThingURL in pageURLs:
                 continue
-            pageURLs.append(foodStuffLink)
+            pageURLs.append(OrderThingURL)
 
             #上記の内容を繰り返す
-            getLinks(foodStuffLink, level+1, pages, pageURLs)
+            getLinks(OrderThingURL, level+1, pages, pageURLs)
 
 #検索候補ページ(材料)を野菜からクローリングする(材料はなんでもいい)
-getLinks('/video_categories/140', 0, loadPages(), [])
+getLinks('/video_categories/140?page=14', 0, loadPages(), [])
 cur.close()
 conn.close()
