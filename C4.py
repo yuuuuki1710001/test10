@@ -92,3 +92,50 @@ def recipeDisplay(recipeTitle):
         
         #材料と作り方を返す
         return recipeStuff, recipeToCook
+    
+    #DelishKitchen
+    elif re.search(r'^/recipe/', recipeURL):
+        html = urlopen('https://delishkitchen.tv/'.format(recipeURL))
+        soup = BeautifulSoup(html, 'html.parser')
+
+        #材料
+        Stuff = soup.findAll('div', {'class':'ingredient_row'})
+        recipeStuff = ''
+        for stuff in Stuff:
+            for foodstu, quan in zip(stuff.findAll('div', {'class':'ingredient'}), 
+                stuff.findAll('span', {'class':'ingredient-serving'})):
+                foodstuffText = foodstu.get_text().replace('\n', '')
+                #print(foodstuffText + ' ' + quan.get_text())
+                recipeStuff += foodstuffText + ' ' + quan.get_text() + '   '
+        
+        #作り方
+        recipeToCook = ''
+        for recipe in soup.findAll('div', {'class':'step-text-wrap'}):
+            recipeToCook += recipe.get_text()
+        
+        #材料と作り方を返す
+        return recipeStuff, recipeToCook
+
+    #chefご飯
+    elif re.search(r'^/recipe/', recipeURL):
+        html = urlopen('https://chefgohan.gnavi.co.jp/'.format(recipeURL))
+        soup = BeautifulSoup(html, 'html.parser')
+
+        #材料
+        Stuff = soup.findAll('div', {'class':'ingredient_row'})
+        recipeStuff = ''
+        for stuff in Stuff:
+            for foodstu, quan in zip(stuff.findAll('div', {'class':'ingredient_name'}), 
+                stuff.findAll('div', {'class':'ingredient_quantity amount'})):
+                foodstuffText = foodstu.get_text().replace('\n', '')
+                #print(foodstuffText + ' ' + quan.get_text())
+                recipeStuff += foodstuffText + ' ' + quan.get_text() + '   '
+        
+        #作り方
+        recipeToCook = ''
+        for recipe in soup.findAll('p', {'class':'text'}):
+            recipeToCook += recipe.get_text()
+        
+        #材料と作り方を返す
+        return recipeStuff, recipeToCook
+    
