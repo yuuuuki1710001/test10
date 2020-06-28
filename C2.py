@@ -28,7 +28,7 @@ def login():
 
     if request.method == 'GET':
         # ログイン画面に遷移
-        return render_template('template/login.html')
+        return render_template('login.html')
 
     # ログインフォームから送られてきた、ユーザー名とパスワードを取得
     UserID = request.form['username']
@@ -48,7 +48,7 @@ def login():
     if error_message is not None:
         # エラーがあればそれを表示したうえでログイン画面に遷移
         flash(error_message, category = 'alert alert-danger')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('C2.login'))
 
     # エラーがなければ、セッションにユーザーIDを追加してインデックスページへ遷移
     session.clear()
@@ -72,7 +72,7 @@ def createUser():
 
     if request.method == 'GET':
         # ユーザー登録画面に遷移
-        return render_template('template/create_user.html')
+        return render_template('create_user.html')
 
     # 登録フォームから送られてきた、ユーザー名とパスワードを取得
     UserID = request.form['username']
@@ -96,11 +96,11 @@ def createUser():
     # エラーがあれば、それを画面に表示させる
     if error_message is not None:
         flash(error_message, category = 'alert alert-danger')
-        return redirect(url_for('auth.create_user'))
+        return redirect(url_for('C2.create_user'))
 
     # ログイン画面へ遷移
     flash('ユーザー登録が完了しました。登録した内容でログインしてください', category = 'alert alert-info')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('C2.login'))
 
 
 """
@@ -116,11 +116,11 @@ def logout():
     # ログアウトする
     session.clear()
     flash('ログアウトしました', category = 'alert alert-info')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('C2.login'))
 
 
 # @bp.before_app_request
-@app.before_request
+# @app.before_request
 # def load_logged_in_user():
 #     # どのURLが要求されても、ビュー関数の前で実行される関数
 #     # ログインしているか確認し、ログインされていればユーザー情報を取得する
@@ -132,18 +132,18 @@ def logout():
 #     else:
 #         db = 
 
-def login_required(view):
-    # ユーザーがログインされているかどうかをチェックし、
-    # そうでなければログインページにリダイレクト
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            flash('ログインをしてから操作してください', category='alert alert-warning')
-            return redirect(url_for('auth.login'))
+# def login_required(view):
+#     # ユーザーがログインされているかどうかをチェックし、
+#     # そうでなければログインページにリダイレクト
+#     @functools.wraps(view)
+#     def wrapped_view(**kwargs):
+#         if g.user is None:
+#             flash('ログインをしてから操作してください', category='alert alert-warning')
+#             return redirect(url_for('auth.login'))
 
-        return view(**kwargs)
+#         return view(**kwargs)
 
-    return wrapped_view
+#     return wrapped_view
 
 if __name__ == "__main__":
     app.run(debug = True)

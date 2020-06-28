@@ -19,7 +19,7 @@ def userInput(username, password):
         post     = '3306',
         user     = 'root',
         password = 'baskdrag1421_mysql',
-        databese = 'local'
+        databese = 'local')
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
