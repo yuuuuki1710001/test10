@@ -17,17 +17,17 @@ import pymysql
 def userInput(username, password):
     conn = pymysql.connect(
         host     = '',
-        post     = '10pan',
+        post     = '3306',
         user     = 'admin',
         password = '10pan',
-        cook     = 'cook'
+        db     = 'cook'
     )
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
     cur.execute('USE cook')
 
-    cur.execute('CREATE TABLE IF NOT EXISTS user(UserID VARCHER(256), Pass VARCHER(256), PRIMARY KEY(UserID));')
+    cur.execute('CREATE TABLE IF NOT EXISTS user(UserID VARCHER(256), Pass VARCHER(512), PRIMARY KEY(UserID));')
     cur.execute('SELECT UserID FROM user WHERE UserID = %s', (username))
 
     if cur.rowcount == 1:
@@ -52,10 +52,10 @@ def userInput(username, password):
 def userOutput(username, password):
     conn = pymysql.connect(
         host     = '',
-        post     = '10pan',
+        post     = '3306',
         user     = 'admin',
         password = '10pan',
-        cook     = 'cook'
+        db     = 'cook'
     )
     conn.ping(reconnect = True)
 
