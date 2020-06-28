@@ -1,20 +1,40 @@
-import mysql.connector as mydb
+"""
+    C7      :   利用者情報管理部
+    Data    :   2020/06/28
+    purpose :   利用者情報のデータベース処理
+"""
 
-# 新規登録
+# import mysql.connector as mydb
+import pymysql
+
+"""
+    FunctionName    :   userInput
+    Data            :   2020/06/28
+    Designer        :   前原達也
+    Function        :   新規登録のためのデータベース操作
+    return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
+"""
 def userInput(username, password):
-    conn = mydb.connect(
+    conn = pymysql.connect(
         host     = '',
+<<<<<<< HEAD
         post     = '',
         user     = '',
         password = '',
         database = ''
+=======
+        post     = '3306',
+        user     = 'admin',
+        password = '10pan',
+        db     = 'cook'
+>>>>>>> 152a4247f7b0dc5805781220b686ead83dac3779
     )
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
     cur.execute('USE cook')
 
-    cur.execute('CREATE TABLE IF NOT EXISTS user(UserID VARCHER(256), Pass VARCHER(256), PRIMARY KEY(UserID));')
+    cur.execute('CREATE TABLE IF NOT EXISTS user(UserID VARCHER(256), Pass VARCHER(512), PRIMARY KEY(UserID));')
     cur.execute('SELECT UserID FROM user WHERE UserID = %s', (username))
 
     if cur.rowcount == 1:
@@ -29,14 +49,20 @@ def userInput(username, password):
         return 0
 
 
-# ログイン
+"""
+    FunctionName    :   userOutput
+    Data            :   2020/06/28
+    Designer        :   前原達也
+    Function        :   ログインのためのデータベース操作
+    return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
+"""
 def userOutput(username, password):
-    conn = mydb.connect(
+    conn = pymysql.connect(
         host     = '',
-        post     = '',
-        user     = '',
-        password = '',
-        databese = ''
+        post     = '3306',
+        user     = 'admin',
+        password = '10pan',
+        db     = 'cook'
     )
     conn.ping(reconnect = True)
 
