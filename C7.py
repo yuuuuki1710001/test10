@@ -1,14 +1,25 @@
+"""
+    C7      :   利用者情報管理部
+    Data    :   2020/06/28
+    purpose :   利用者情報のデータベース処理
+"""
+
 import mysql.connector as mydb
 
-# 新規登録
+"""
+    FunctionName    :   userInput
+    Data            :   2020/06/28
+    Designer        :   前原達也
+    Function        :   新規登録のためのデータベース操作
+    return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
+"""
 def userInput(username, password):
     conn = mydb.connect(
-        host     = '',
-        post     = '',
-        user     = '',
-        password = '',
-        databese = ''
-    )
+        host     = 'localhost',
+        post     = '3306',
+        user     = 'root',
+        password = 'baskdrag1421_mysql',
+        databese = 'local'
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
@@ -29,14 +40,20 @@ def userInput(username, password):
         return 0
 
 
-# ログイン
+"""
+    FunctionName    :   userOutput
+    Data            :   2020/06/28
+    Designer        :   前原達也
+    Function        :   ログインのためのデータベース操作
+    return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
+"""
 def userOutput(username, password):
     conn = mydb.connect(
-        host     = '',
-        post     = '',
-        user     = '',
-        password = '',
-        databese = ''
+        host     = 'localhost',
+        post     = '3306',
+        user     = 'root',
+        password = 'baskdrag1412_mysql',
+        databese = 'local'
     )
     conn.ping(reconnect = True)
 
