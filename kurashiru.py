@@ -90,7 +90,7 @@ def getLinks(pageURL, level, pages, pageURLs):
 
         #レシピのサイトの関連ワードのURLを全て見つける
         OrderThingURLs = bs.findAll('a', href=re.compile('/video_categories/'))
-        OrderThingURLs = [OrderThingURL.attrs['href'] + '?page=15' for OrderThingURL in OrderThingURLs]
+        OrderThingURLs = [OrderThingURL.attrs['href'] + '?page=44' for OrderThingURL in OrderThingURLs]
 
         for OrderThingURL in OrderThingURLs:
 
@@ -104,6 +104,6 @@ def getLinks(pageURL, level, pages, pageURLs):
             getLinks(OrderThingURL, level+1, pages, pageURLs)
 
 #検索候補ページ(材料)を野菜からクローリングする(材料はなんでもいい)
-getLinks('/video_categories/140?page=14', 0, loadPages(), [])
+getLinks('/video_categories/244?page=42', 0, loadPages(), [])
 cur.close()
 conn.close()

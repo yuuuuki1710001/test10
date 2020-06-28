@@ -7,7 +7,7 @@ def userInput(username, password):
         post     = '',
         user     = '',
         password = '',
-        databese = ''
+        database = ''
     )
     conn.ping(reconnect = True)
 
