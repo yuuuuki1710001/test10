@@ -4,7 +4,8 @@
     purpose :   利用者情報のデータベース処理
 """
 
-import mysql.connector as mydb
+# import mysql.connector as mydb
+import pymysql
 
 """
     FunctionName    :   userInput
@@ -14,12 +15,13 @@ import mysql.connector as mydb
     return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
 """
 def userInput(username, password):
-    conn = mydb.connect(
-        host     = 'localhost',
-        post     = '3306',
-        user     = 'root',
-        password = 'baskdrag1421_mysql',
-        databese = 'local')
+    conn = pymysql.connect(
+        host     = '',
+        post     = '10pan',
+        user     = 'admin',
+        password = '10pan',
+        cook     = 'cook'
+    )
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
@@ -48,12 +50,12 @@ def userInput(username, password):
     return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
 """
 def userOutput(username, password):
-    conn = mydb.connect(
-        host     = 'localhost',
-        post     = '3306',
-        user     = 'root',
-        password = 'baskdrag1412_mysql',
-        databese = 'local'
+    conn = pymysql.connect(
+        host     = '',
+        post     = '10pan',
+        user     = 'admin',
+        password = '10pan',
+        cook     = 'cook'
     )
     conn.ping(reconnect = True)
 
