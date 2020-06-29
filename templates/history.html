@@ -4,11 +4,20 @@
     <title>recipe</title>
 </head>
 <body>
-    <form action="{{ url_for('RecipeDisplay') }}" method="POST">
-        <p>検索された条件のレシピ一覧です(テスト)</p>
-        {% for recipe in recipes %} 
-            <p><input type="submit" name="recipe" value={{ recipe }}></p>
-        {% endfor %}
-    </form>
+    {% if userID %}
+        <form action="{{ url_for('RecipeDisplay', userID=userID) }}" method="POST">
+            <button type="button" onclick="history.back()">戻る</button>
+            <p>検索された条件のレシピ一覧です(テスト)</p>
+            {% if historyTitles == [] %}
+                <p>該当レシピなし</p>
+            {% else %}
+                {% for historyTitle in historyTitles %} 
+                    <p>
+                        <input type="submit" name="recipeTitle" value="{{ historyTitle }}">
+                    </p>
+                {% endfor %}
+            {% endif %}
+        </form>
+    {% endif %}
 </body>
 </html>

@@ -27,7 +27,7 @@ cur.execute('USE cook')
     Date:           2020/6/26
     Designer:       野田 啓介
     Function:       レシピのURLを返す
-    entry:          recipeTitle       --- レシピのタイトル名
+    entry:          recipeTitle       --- レシピのタイトル名(str型)
     return:         cur.fetchone()[0] --- レシピのURL(str型)
 
 """
@@ -44,7 +44,7 @@ def selectURL(recipeTitle):
     Date:           2020/6/26
     Designer:       野田 啓介, 
     Function:       レシピの材料と調理時間と作り方を返す
-    entry:          recipeTitle       --- レシピのタイトル名
+    entry:          recipeTitle       --- レシピのタイトル名(str型)
     return:         cur.fetchone()[0] --- レシピのURL(str型)
 
 """
@@ -95,7 +95,7 @@ def recipeDisplay(recipeTitle):
     
     #DelishKitchen
     elif re.search(r'^/recipe/', recipeURL):
-        html = urlopen('https://delishkitchen.tv/'.format(recipeURL))
+        html = urlopen('https://delishkitchen.tv'.format(recipeURL))
         soup = BeautifulSoup(html, 'html.parser')
 
         #材料
@@ -118,7 +118,7 @@ def recipeDisplay(recipeTitle):
 
     #chefご飯
     elif re.search(r'^/recipe/', recipeURL):
-        html = urlopen('https://chefgohan.gnavi.co.jp/'.format(recipeURL))
+        html = urlopen('https://chefgohan.gnavi.co.jp'.format(recipeURL))
         soup = BeautifulSoup(html, 'html.parser')
 
         #材料

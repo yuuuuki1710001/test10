@@ -16,12 +16,12 @@ def FavoriteRegister(UserID,recipeURL,recipeTitle):
                'AND recipeURL = %s'
                'AND recipeTitle = %s',(UserID, recipeURL, recipeTitle))
     
-    if cur.rowcount == 0 :
+    if cur.rowcount == 0:
         cur.execute('INSERT INTO favorite (UserID,recipeURL,recipeTitle) VALUES (%s,%s,%s)',(UserID, recipeURL, recipeTitle))
         conn.commit()
-        return 1
+        return 0
 
-    return 0
+    return 1
 
 def FavoriteDisplay(userID):
     favoriteTitles = []

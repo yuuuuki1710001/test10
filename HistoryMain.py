@@ -12,7 +12,7 @@ cur = conn.cursor()
 cur.execute('USE cook')
 
 def HistoryRegister(UserID,recipeURL,recipeTitle):
-    cur.execute('INSERT INTO favorite (UserID,recipeURL,recipeTitle) VALUES (%s,%s,%s)',(UserID, recipeURL, recipeTitle))
+    cur.execute('INSERT INTO history (UserID,recipeURL,recipeTitle) VALUES (%s,%s,%s)',(UserID, recipeURL, recipeTitle))
     conn.commit()
 
 def HistoryDisplay(userID):
