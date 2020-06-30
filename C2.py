@@ -1,13 +1,14 @@
 """
     C2      :   認証処理部
-    Data    :   2020/6/28
-    purpose :   ログイン処理、新規登録処理、ログアウト処理
+    Data    :   2020/6/30
+    Purpose :   ログイン処理、新規登録処理、ログアウト処理
 """
 
 import functools
 from flask import Flask, Blueprint, flash, g, redirect, render_template, request, session, url_for
-from werkzeug.security import generate_password_hash
+from C1 import Home
 from C7 import userInput, userOutput
+from Home import home
 
 # bp = Blueprint('auth', __name__, url_prefix='/auth')
 app = Flask(__name__)
@@ -18,7 +19,8 @@ app = Flask(__name__)
     Data            :   2020/0628
     Designer        :   前原達也
     Function        :   利用者のログイン処理
-    return          :   セッションを保存し、利用者のホーム画面に遷移
+    Entry           :   利用者ID、パスワード
+    Return          :   セッションを保存し、利用者のホーム画面に遷移
 """
 # @bp.route('/login', methods=('GET', 'POST'))
 @app.route('/', methods=('GET', 'POST'))
@@ -31,18 +33,19 @@ def login():
         return render_template('login.html')
 
     # ログインフォームから送られてきた、ユーザー名とパスワードを取得
-    UserID = request.form['username']
+    UserID = request.form['UserID']
     Pass = request.form['password']
-
-    # パスワードをハッシュ化
-    Pass = generate_password_hash(Pass)
 
     # DBと接続
     db = userOutput(UserID, Pass)
 
     # ユーザー名とパスワードのチェック
     error_message = None
-    if db == 1 is None:
+    if not UserID:
+        error_message = 'ユーザー名の入力は必須です'
+    elif not Pass:
+        error_message = 'パスワードの入力は必須です'
+    elif db == 1 is None:
         error_message = 'ユーザー名もしくはパスワードが正しくありません'
 
     if error_message is not None:
@@ -62,7 +65,8 @@ def login():
     Data            :   2020/06/28
     Designer        :   前原達也
     Function        :   利用者の新規登録処理
-    return          :   データベースに利用者情報を格納し、ログイン画面に遷移
+    Entry           :   利用者ID、パスワード
+    Return          :   データベースに利用者情報を格納し、ログイン画面に遷移
 """
 # @bp.route('/create_user', methods=('GET', 'POST'))
 @app.route('/create_user', methods = ('GET', 'POST'))
@@ -75,11 +79,8 @@ def createUser():
         return render_template('create_user.html')
 
     # 登録フォームから送られてきた、ユーザー名とパスワードを取得
-    UserID = request.form['username']
+    UserID = request.form['UserID']
     Pass = request.form['password']
-
-    # パスワードとハッシュ化
-    Pass = generate_password_hash(Pass)
 
     # DBと接続
     db = userInput(UserID, Pass)
@@ -108,7 +109,8 @@ def createUser():
     Data            :   2020/06/28
     Designer        :   前原達也
     Function        :   ログアウト処理
-    return          :   セッションを破棄し、ログイン画面に遷移
+    Entry           :   なし
+    Return          :   セッションを破棄し、ログイン画面に遷移
 """
 # @bp.route('/logout')
 @app.route('/logout')

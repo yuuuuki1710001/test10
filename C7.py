@@ -1,33 +1,30 @@
 """
     C7      :   利用者情報管理部
     Data    :   2020/06/28
-    purpose :   利用者情報のデータベース処理
+    Purpose :   利用者情報のデータベース処理
 """
 
 # import mysql.connector as mydb
 import pymysql
+from werkzeug.security import generate_password_hash, check_password_hash
 
 """
     FunctionName    :   userInput
-    Data            :   2020/06/28
+    Data            :   2020/06/30
     Designer        :   前原達也
     Function        :   新規登録のためのデータベース操作
-    return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
+    Return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
 """
 def userInput(username, password):
+    # パスワードをハッシュ化
+    Pass = generate_password_hash(password)
+    
     conn = pymysql.connect(
-        host     = '',
-<<<<<<< HEAD
-        post     = '',
-        user     = '',
-        password = '',
-        database = ''
-=======
-        post     = '3306',
-        user     = 'admin',
-        password = '10pan',
-        db     = 'cook'
->>>>>>> 152a4247f7b0dc5805781220b686ead83dac3779
+        host        = '172.30.24.166',
+        port        = '3306',
+        user        = 'admin',
+        password    = '10pan',
+        db          = 'cook'
     )
     conn.ping(reconnect = True)
 
@@ -42,7 +39,7 @@ def userInput(username, password):
         conn.close()
         return 1
     elif (cur.rowcount == 0):
-        cur.execute('INSERT INTO user(UserID, Pass) VALUES(%s, %s);', (username, password))
+        cur.execute('INSERT INTO user(UserID, Pass) VALUES(%s, %s);', (username, Pass))
         conn.commit()
         cur.close()
         conn.close()
@@ -54,15 +51,15 @@ def userInput(username, password):
     Data            :   2020/06/28
     Designer        :   前原達也
     Function        :   ログインのためのデータベース操作
-    return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
+    Return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致
 """
 def userOutput(username, password):
     conn = pymysql.connect(
-        host     = '',
-        post     = '3306',
-        user     = 'admin',
-        password = '10pan',
-        db     = 'cook'
+        host        = '172.30.24.166',
+        port        = '3306',
+        user        = 'admin',
+        password    = '10pan',
+        db          = 'cook'
     )
     conn.ping(reconnect = True)
 
@@ -78,11 +75,9 @@ def userOutput(username, password):
     else:
         data = cur.fetchone()
         
-        if password == data[0]:
+        if check_password_hash(data[0], password):
             cur.close()
             conn.close()
             return 0
-        elif password != data[0]:
-            cur.close()
-            conn.close()
-            return 1
+        
+        return 1
