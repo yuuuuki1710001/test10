@@ -42,22 +42,6 @@ def Login():
 
 
 """
-    FunctionName:   Home
-    Date:           2020/6/30
-    Designer:       野田 啓介
-    Function:       ホーム画面を表示
-    return:         Home.html --- ホーム画面のhtmlファイル
-                    userID    --- ユーザID(str型)
-
-"""
-@app.route('/Home', methods=['POST'])
-def Home():
-    userID = request.form['userID'] #ユーザーIDを取得
-    return render_template('Home.html', userID=userID)
-
-
-
-"""
     FunctionName:   SignUp
     Date:           2020/6/30
     Designer:       野田 啓介
@@ -70,39 +54,19 @@ def SignUp():
     return render_template('SignUp.html')
 
 
-
 """
-    FunctionName:   Favorite
+    FunctionName:   Home
     Date:           2020/6/30
     Designer:       野田 啓介
-    Function:       お気に入り画面
-    entry:          userID        --- ユーザーID(str型)
-    return:         Favorite.html --- お気に入り画面のhtmlファイル
-                    userID        --- ユーザーID(str型)
-                    recipeTitles  --- お気に入り登録しているレシピ一覧(list型)
+    Function:       ホーム画面を表示
+    return:         Home.html --- ホーム画面のhtmlファイル
+                    userID    --- ユーザID(str型)
 
 """
-@app.route('/Favorite/<userID>', methods=['POST'])
-def Favorite(userID):
-    recipeTitles = FavoriteDisplay(userID) #お気に入り登録しているレシピ一覧を取得
-    return render_template('Favorite.html', userID=userID, recipeTitles=recipeTitles)
-
-
-
-"""
-    FunctionName:   FavoriteDelete
-    Date:           2020/6/30
-    Designer:       野田 啓介
-    Function:       お気に入り削除画面
-    entry:          userID              --- ユーザーID(str型)
-    return:         FavoriteDelete.html --- お気に入り画面のhtmlファイル
-                    userID              --- ユーザーID(str型)
-
-"""
-@app.route('/FavoriteDelete/<userID>', methods=['GET', 'POST'])
-def FavoriteDelete(userID):
-    flash('削除しました', 'message') #削除のメッセージ
-    return render_template('FavoriteDelete.html', userID=userID)
+@app.route('/Home', methods=['POST'])
+def Home():
+    userID = request.form['userID'] #ユーザーIDを取得
+    return render_template('Home.html', userID=userID)
 
 
 
@@ -155,7 +119,25 @@ def RecipeDisplay(userID):
         HistoryRegister(userID, selectURL(recipeTitle), recipeTitle) #履歴に登録
         return render_template('RecipeDisplay.html', recipeTitle=recipeTitle, 
             OrderThing=OrderThing, recipeToCook=recipeToCook, userID=userID)
-        
+
+
+
+"""
+    FunctionName:   Favorite
+    Date:           2020/6/30
+    Designer:       野田 啓介
+    Function:       お気に入り画面
+    entry:          userID        --- ユーザーID(str型)
+    return:         Favorite.html --- お気に入り画面のhtmlファイル
+                    userID        --- ユーザーID(str型)
+                    recipeTitles  --- お気に入り登録しているレシピ一覧(list型)
+
+"""
+@app.route('/Favorite/<userID>', methods=['POST'])
+def Favorite(userID):
+    recipeTitles = FavoriteDisplay(userID) #お気に入り登録しているレシピ一覧を取得
+    return render_template('Favorite.html', userID=userID, recipeTitles=recipeTitles)
+
 
 
 """
@@ -183,6 +165,24 @@ def FavoriteRegistration(userID):
 
     return render_template('FavoriteRegistration.html')
 
+
+
+"""
+    FunctionName:   FavoriteDelete
+    Date:           2020/6/30
+    Designer:       野田 啓介
+    Function:       お気に入り削除画面
+    entry:          userID              --- ユーザーID(str型)
+    return:         FavoriteDelete.html --- お気に入り画面のhtmlファイル
+                    userID              --- ユーザーID(str型)
+
+"""
+@app.route('/FavoriteDelete/<userID>', methods=['GET', 'POST'])
+def FavoriteDelete(userID):
+    
+    flash('削除しました', 'message') #削除のメッセージ
+    return render_template('FavoriteDelete.html', userID=userID)
+        
 
 
 """
