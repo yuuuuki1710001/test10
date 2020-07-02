@@ -3,22 +3,16 @@ import os
 import glob
 import matplotlib.pyplot as plt
 import cv2
-#import googleApi  # 　後に出てくるコードのファイル名です(googleのOCRのAPIを使った文字認識のプログラム)
-import pyocr
+import pyocr 
 import pyocr.builders
 
 def transform_by4(img, points):
-    """
-    4点を指定してトリミングする。
-    source:http://blanktar.jp/blog/2015/07/python-opencv-crop-box.html
-    """
-
     points = points[np.argsort(points, axis=0)[:, 1]]
 # yが小さいもの順に並び替え。
     top = points[np.argsort(points[:2], axis=0)[:, 0]]
 # 前半二つは四角形の上。xで並び替えると左右も分かる。
     bottom = points[2:][np.argsort(points[2:], axis=0)[:, 0]]
-# 後半二つは四角形の下。同じくxで並び替え。
+# 後半二つは四角形の下。xで並び替え。
     points = np.vstack((top, bottom))
 # 分離した二つを再結合。
 
@@ -35,14 +29,13 @@ def transform_by4(img, points):
     return cv2.warpPerspective(img, M, (width, height))  # 透視変換行列を使って切り抜く。
 # matplotlibで正常に画像が表示できるための関数。（モノクロ画像に対して）
 
-
+"""
 def show_img(img):
     plt.figure()
-    tmp = np.tile(img.reshape(img.shape[0], img.shape[1], -1),
-                  reps=3)
+    tmp = np.tile(img.reshape(img.shape[0], img.shape[1], -1),reps=3)
     plt.imshow(tmp)
     plt.show()
-
+"""
 
 def cont_edge(im, filename):
     im_size = im.shape[0] * im.shape[1]
@@ -50,24 +43,26 @@ def cont_edge(im, filename):
     cv2.imwrite(filename + '_gray.jpg', im_gray)
     print(filename + '_gray.jpg')
     im_blur = cv2.fastNlMeansDenoising(im_gray)  # 画像のノイズを取り除く
-    # _, im_th = cv2.threshold(im_blur, 127, 255, cv2.THRESH_BINARY)
-    # 以下のコマンドで2値化をする
+    # _,
+    im_th = cv2.threshold(im_blur, 127, 255, cv2.THRESH_BINARY)
+    # 2値化をする
     im_th = cv2.adaptiveThreshold(im_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY, 15, 5)
     # im_th = cv2.Canny(im_blur, 50, 200)
     th_filename = "{:s}_th.jpg".format(filename)
     # 2値化させた画像を表示させる。
-    show_img(im_th)
+    #show_img(im_th)
     print(th_filename)
     # 画像の保存
     cv2.imwrite(th_filename, im_th)
     print(filename + '_th.jpg')
-
-    img, cnts, hierarchy = cv2.findContours(im_th, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    #img, 
+    cnts, hierarchy = cv2.findContours(im_th, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     # 輪郭の抽出
     # 輪郭画像、輪郭、階層情報の順に並んでいる。
     cnts.sort(key=cv2.contourArea, reverse=True)
     # 抽出された輪郭の面積が大きい順にソートをかける
     cnt = cnts[1]
+    img=0
     img = cv2.drawContours(img, [cnt], -1, (0, 255, 0), 3)
     cv2.imwrite(filename+"_drawcont.jpg", img)
     im_line = im.copy()
@@ -105,14 +100,13 @@ def cont_edge(im, filename):
     print(filename + '_rect.jp')
     return im_rect
 
-
 def convert(filename=None, capture=False, CUT=False):
     if filename == None and capture == False:
         pass
-    elif capture == True:
+    #elif capture == True:
         # Webカメラで読み込むこともやりたかったがUbuntuがうまく認識してくれず、断念。
-        cap = cv2.VideoCapture(0)
-    elif filename:
+    #    cap = cv2.VideoCapture(0)
+    elif filename :
         im = cv2.imread(filename)
     filename = filename[:-4]
     # 拡張子を取り除いた形で記録する
@@ -128,7 +122,7 @@ def convert(filename=None, capture=False, CUT=False):
     rect_th_filename = "{:s}_rect_th.jpg".format(filename)
     cv2.imwrite(rect_th_filename, im_rect_th)
     print(rect_th_filename)
-    show_img(im_rect_th)
+#    show_img(im_rect_th)
 # 既存のoutput.txtファイルが存在すればそれを消去して新たにoutput.txtを作成
 # 文字認識についてはGoogleのAPIを利用させてもらった。
     if glob.glob('output.txt'):
