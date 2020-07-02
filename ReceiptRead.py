@@ -127,8 +127,6 @@ def convert(filename=None, capture=False, CUT=False):
 # 文字認識についてはGoogleのAPIを利用させてもらった。
     if glob.glob('output.txt'):
         os.remove('output.txt')
-    # 以下のコメントを外せばtesseractでの実行もできる。
-    # tesseractのインストールは
+#tesseractによる画像の文字認識
     rect_th_filename = "{:s}_rect_th.jpg".format(filename)
     os.system("tesseract {:s} output -l jpn".format(rect_th_filename))
-    #googleApi.detect_text(rect_th_filename)
