@@ -5,7 +5,7 @@
 </head>
 <body>
     {% if userID %}
-        <form action="{{ url_for('RecipeDisplay', userID=userID) }}" method="POST">
+        <form action="{{ url_for('cookme.RecipeDisplay', userID=userID) }}" method="POST">
             <button type="button" onclick="history.back()">戻る</button>
             <p>検索された条件のレシピ一覧です(テスト)</p>
             {% if historyTitles == [] %}
