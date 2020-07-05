@@ -1,7 +1,7 @@
 """
     (あくまでコードは例です(担当者はコードを書き直してください))
     C3:レシピ検索部
-    Date:2020/6/26
+    Date:2020/07/05
     purpose:レシピの検索一覧を取得する
 """
 
@@ -13,6 +13,7 @@ import MeCab #形態素解析ライブラリ
 
 #MySQLに接続する(おまじない)
 conn = pymysql.connect(
+                    host='172.30.27.88',
                     user='admin',
                     passwd='10pan',
                     db='cook', 
@@ -56,8 +57,9 @@ def CleanWords(OrderThing):
     entry:          OrderThing   --- 入力した材料名
     return:         recipeTitles --- レシピの検索候補(list型)
 """
-def IngredientsInputs(OrderThing):
+def IngredientsInputs(OrderThing, recipeTime):
     words = CleanWords(OrderThing)
+    print(words)
 
     #レシピ一覧を格納するリストを用意する
     recipeTitles = []
@@ -88,6 +90,7 @@ def IngredientsInputs(OrderThing):
         recipeTitles.extend(searchTitles3)
 
         #タイトルから検索
+        """
         cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
             (words[0]))
         searchTitlesT1 = [row[1] for row in cur.fetchall()]
@@ -99,10 +102,13 @@ def IngredientsInputs(OrderThing):
         cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
             (words[2]))
         searchTitlesT3 = [row[1] for row in cur.fetchall()]
+        """
 
+        """
         recipeTitles.extend(searchTitlesT1)
         recipeTitles.extend(searchTitlesT2)
         recipeTitles.extend(searchTitlesT3)
+        """
         
         return recipeTitles
     
@@ -145,7 +151,10 @@ def IngredientsInputs(OrderThing):
         recipeTitles.extend(searchTitles5)
         recipeTitles.extend(searchTitles6)
 
+        
+    
         #タイトルから検索
+        """         
         cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
             (words[0]))
         searchTitlesT1 = [row[1] for row in cur.fetchall()]
@@ -157,6 +166,7 @@ def IngredientsInputs(OrderThing):
         cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
             (words[2]))
         searchTitlesT3 = [row[1] for row in cur.fetchall()]
+        """
 
         return recipeTitles
     
@@ -179,6 +189,7 @@ def IngredientsInputs(OrderThing):
         recipeTitles.extend(searchTitles3)
 
         #タイトルから検索
+        """
         cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
             (words[0]))
         searchTitlesT1 = [row[1] for row in cur.fetchall()]
@@ -190,12 +201,13 @@ def IngredientsInputs(OrderThing):
         cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
             (words[2]))
         searchTitlesT3 = [row[1] for row in cur.fetchall()]
-
+        """
         return recipeTitles
     
     #それ以外
     else:
         return recipeTitles
+
     
 #cur.close()
 #conn.close()

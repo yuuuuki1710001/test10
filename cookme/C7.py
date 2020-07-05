@@ -20,7 +20,7 @@ def userInput(username, password):
     Pass = generate_password_hash(password)
     
     conn = pymysql.connect(
-        #host        = '172.30.24.166',
+        host        = '172.30.27.88',
         port        = 3306,
         user        = 'admin',
         passwd    = '10pan',
@@ -55,7 +55,7 @@ def userInput(username, password):
 """
 def userOutput(username, password):
     conn = pymysql.connect(
-        #host        = '172.30.24.166',
+        host        = '172.30.27.88',
         port        = 3306,
         user        = 'admin',
         passwd    = '10pan',

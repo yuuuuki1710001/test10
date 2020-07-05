@@ -1,6 +1,7 @@
 import pymysql
 
 conn = pymysql.connect(
+                    host='172.30.27.88',
                     user='admin',
                     passwd='10pan',
                     db='cook',

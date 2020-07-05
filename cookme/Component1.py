@@ -1,6 +1,6 @@
 """
     C1:UI処理部
-    Date:2020/07/04
+    Date:2020/07/05
     purpose:ホーム画面, 検索結果画面, お気に入り登録画面, お気に入り表示画面,
             お気に入り削除画面, 履歴画面, レシピ表示画面を表示する
 """
@@ -15,6 +15,7 @@ from cookme.HistoryMain import HistoryDisplay, HistoryRegister
 
 #MySQLに接続する
 conn = pymysql.connect(
+                    host='172.30.27.88',
                     user='admin',
                     passwd='10pan',
                     db='cook',
@@ -47,7 +48,7 @@ def Home(userID):
 
 """
     FunctionName    :   SearchResult
-    Data            :   2020/07/04
+    Data            :   2020/07/05
     Designer        :   野田啓介
     Function        :   レシピ検索候補主処理
     Entry           :   userID --- ユーザー名
@@ -57,9 +58,22 @@ def Home(userID):
 """
 @cookme.route('/SearchResult/<userID>', methods=['POST'])
 def SearchResult(userID):
-    userID = request.form['userID']              #ユーザーID
-    OrderThing = request.form['name1']           #材料名
-    recipeTitles = IngredientsInputs(OrderThing) #レシピの検索候補
+    try:
+        userID = request.form['userID']                   #ユーザーID
+        OrderThing = request.form['OrderThing']           #材料名
+    
+    #材料名が入力されていないとき
+    except BadRequestKeyError:
+        OrderThing = ''
+
+    try:
+        recipeTime = request.form['recipeTime']           #調理時間
+
+    #調理時間が入力されていないとき
+    except BadRequestKeyError:
+        recipeTime = -1
+
+    recipeTitles = IngredientsInputs(OrderThing, recipeTime) #レシピの検索候補
     return render_template('SearchResult.html', userID=userID, recipeTitles=recipeTitles) #SearchResult.htmlを読み込む
 
 
