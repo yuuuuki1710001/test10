@@ -26,9 +26,9 @@ cur.execute('USE cook')
 """
     FunctionName:   CleanWords
     Date:           2020/6/26
-    Designer:
+    Designer:       鳥居昭吾
     Function:       入力した材料名を形態素解析する
-    entry:           OrderThing  --- 入力した材料名
+    entry:          OrderThing  --- 入力した材料名
     return:         words       --- 形態素解析した単語ら(list型)
 
 """
@@ -64,6 +64,7 @@ def IngredientsInputs(OrderThing):
 
     #材料が3つ入力された場合
     if len(words) == 3:
+        #材料から検索
         cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
             'AND OrderThing2 = %s'
             'AND OrderThing3 = %s',
@@ -85,6 +86,24 @@ def IngredientsInputs(OrderThing):
         recipeTitles.extend(searchTitles)
         recipeTitles.extend(searchTitles2)
         recipeTitles.extend(searchTitles3)
+
+        #タイトルから検索
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[0]))
+        searchTitlesT1 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[1]))
+        searchTitlesT2 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[2]))
+        searchTitlesT3 = [row[1] for row in cur.fetchall()]
+
+        recipeTitles.extend(searchTitlesT1)
+        recipeTitles.extend(searchTitlesT2)
+        recipeTitles.extend(searchTitlesT3)
+        
         return recipeTitles
     
     #材料名が2つ入力された場合
@@ -125,6 +144,20 @@ def IngredientsInputs(OrderThing):
         recipeTitles.extend(searchTitles4)
         recipeTitles.extend(searchTitles5)
         recipeTitles.extend(searchTitles6)
+
+        #タイトルから検索
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[0]))
+        searchTitlesT1 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[1]))
+        searchTitlesT2 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[2]))
+        searchTitlesT3 = [row[1] for row in cur.fetchall()]
+
         return recipeTitles
     
     #材料名が1つの場合
@@ -144,6 +177,20 @@ def IngredientsInputs(OrderThing):
         recipeTitles.extend(searchTitles)
         recipeTitles.extend(searchTitles2)
         recipeTitles.extend(searchTitles3)
+
+        #タイトルから検索
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[0]))
+        searchTitlesT1 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[1]))
+        searchTitlesT2 = [row[1] for row in cur.fetchall()]
+
+        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
+            (words[2]))
+        searchTitlesT3 = [row[1] for row in cur.fetchall()]
+
         return recipeTitles
     
     #それ以外
