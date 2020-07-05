@@ -9,22 +9,22 @@
     </head>
 
     <body>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class=flashes>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-
         <h1>
             <center>CookME♪</center>
         </h1>
         <form action = "{{url_for('user.login')}}" method = "POST">
             <center>
                 ようこそ、CookMeへ<br><br>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul class=flashes>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
 
                 <ul>
                     <li class = "name">

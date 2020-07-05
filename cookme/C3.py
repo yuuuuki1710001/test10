@@ -13,7 +13,7 @@ import MeCab #形態素解析ライブラリ
 
 #MySQLに接続する(おまじない)
 conn = pymysql.connect(
-                    host='172.30.27.88',
+                    #host='172.30.27.88',
                     user='admin',
                     passwd='10pan',
                     db='cook', 
@@ -51,7 +51,7 @@ def CleanWords(OrderThing):
     
 """
     FunctionName:   IngredientsInputs
-    Date:           2020/6/26
+    Date:           2020/07/05
     Designer:
     Function:       レシピの検索候補を取得する
     entry:          OrderThing   --- 入力した材料名

@@ -6,7 +6,17 @@
 <body>
     {% if userID %}
         <h1>Cook me!</h1>
-        <p>ようこそ，{{ userID }}さん!</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
         <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST">
             <button type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button>
         </form>

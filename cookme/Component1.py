@@ -15,7 +15,7 @@ from cookme.HistoryMain import HistoryDisplay, HistoryRegister
 
 #MySQLに接続する
 conn = pymysql.connect(
-                    host='172.30.27.88',
+                    #host='172.30.27.88',
                     user='admin',
                     passwd='10pan',
                     db='cook',
@@ -58,20 +58,23 @@ def Home(userID):
 """
 @cookme.route('/SearchResult/<userID>', methods=['POST'])
 def SearchResult(userID):
-    try:
-        userID = request.form['userID']                   #ユーザーID
-        OrderThing = request.form['OrderThing']           #材料名
-    
+    OrderThing = request.form['OrderThing']           #材料名
+    recipeTime = request.form['recipeTime']           #調理時間
+
     #材料名が入力されていないとき
-    except BadRequestKeyError:
+    if not OrderThing:
         OrderThing = ''
 
-    try:
-        recipeTime = request.form['recipeTime']           #調理時間
-
     #調理時間が入力されていないとき
-    except BadRequestKeyError:
+    if not recipeTime:
         recipeTime = -1
+
+    #材料名も調理時間も入力されていないとき
+    if (not OrderThing) and (not recipeTime):
+        session.clear()
+        flash('材料名か調理時間を入力してください', 'message')
+        return redirect(url_for('cookme.Home', userID=userID))
+
 
     recipeTitles = IngredientsInputs(OrderThing, recipeTime) #レシピの検索候補
     return render_template('SearchResult.html', userID=userID, recipeTitles=recipeTitles) #SearchResult.htmlを読み込む

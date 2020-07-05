@@ -1,6 +1,6 @@
 """
     C2      :   認証処理部
-    Data    :   2020/6/30
+    Data    :   2020/07/06
     Purpose :   ログイン処理、新規登録処理、ログアウト処理
 """
 
@@ -14,7 +14,7 @@ user = Blueprint('user', __name__)
 
 """
     FunctionName    :   login
-    Data            :   2020/07/04
+    Data            :   2020/07/06
     Designer        :   前原達也
     Function        :   利用者のログイン処理
     Entry           :   利用者ID、パスワード
@@ -43,8 +43,9 @@ def login():
         error_message = 'ユーザー名の入力は必須です'
     elif not Pass:
         error_message = 'パスワードの入力は必須です'
-    elif db == 1 is None:
+    elif db == 1:
         error_message = 'ユーザー名もしくはパスワードが正しくありません'
+        print(error_message)
 
     if error_message is not None:
         # エラーがあればそれを表示したうえでログイン画面に遷移

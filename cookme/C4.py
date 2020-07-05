@@ -12,7 +12,7 @@ import re
 
 #MySQLに接続する(おまじない)
 conn = pymysql.connect(
-                    host='172.30.27.88',
+                    #host='172.30.27.88',
                     user='admin',
                     passwd='10pan',
                     db='cook', 
