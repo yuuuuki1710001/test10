@@ -1,6 +1,6 @@
 """
     C4:レシピ表示部
-    Date:2020/6/30
+    Date:2020/07/07
     purpose:レシピの材料と調理時間と作り方を取得する
 """
 
@@ -24,7 +24,7 @@ cur.execute('USE cook')
 
 """
     FunctionName:   selectURL
-    Date:           2020/6/30
+    Date:           2020/07/07
     Designer:       野田 啓介
     Function:       レシピのURLを返す
     entry:          recipeTitle       --- レシピのタイトル名(str型)
@@ -41,8 +41,8 @@ def selectURL(recipeTitle):
 
 """
     FunctionName:   recipeDisplay
-    Date:           2020/6/30
-    Designer:       野田 啓介, 
+    Date:           2020/07/07
+    Designer:       野田 啓介, 續 
     Function:       レシピの材料と調理時間と作り方を返す
     entry:          recipeTitle       --- レシピのタイトル名(str型)
     return:         cur.fetchone()[0] --- レシピのURL(str型)
@@ -62,14 +62,19 @@ def recipeDisplay(recipeTitle):
         for Stuff, quantity in zip(soup.findAll('span', {'class':'ingredient-name'}),
             soup.findAll('span', {'class':'ingredient-quantity-amount'})):
             OrderThing += Stuff.get_text() + ' ' + quantity.get_text() + '   '
-        
+
+        #調理時間
+        cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
+                (recipeTitle))
+        recipeTime = cur.fetchone()[0]
+
         #作り方
         recipeToCook = ''
         for recipe in soup.findAll('span', {'class':'content'}):
             recipeToCook += recipe.get_text()
 
         #材料と作り方を返す
-        return OrderThing, recipeToCook
+        return OrderThing, recipeTime, recipeToCook
 
     #cookpad
     elif re.search(r'^/recipe/', recipeURL):
@@ -85,14 +90,19 @@ def recipeDisplay(recipeTitle):
                 foodstuffText = foodstu.get_text().replace('\n', '')
                 #print(foodstuffText + ' ' + quan.get_text())
                 OrderThing += foodstuffText + ' ' + quan.get_text() + '   '
-        
+
+        #調理時間(-1)
+        cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
+                (recipeTitle))
+        recipeTime = cur.fetchone()[0]
+
         #作り方
         recipeToCook = ''
         for recipe in soup.findAll('p', {'class':'step_text'}):
             recipeToCook += recipe.get_text()
         
         #材料と作り方を返す
-        return OrderThing, recipeToCook
+        return OrderThing, recipeTime, recipeToCook
     
     #DelishKitchen
     elif re.search(r'^/recipes/([0-9])+', recipeURL):
@@ -103,6 +113,11 @@ def recipeDisplay(recipeTitle):
         OrderThing = ''
         for Stuff in soup.findAll('div', {'class':'ingredient'}):
             OrderThing += Stuff.get_text()
+
+        #調理時間
+        cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
+                (recipeTitle))
+        recipeTime = cur.fetchone()[0]
         
         #作り方
         recipeToCook = ''
@@ -110,23 +125,28 @@ def recipeDisplay(recipeTitle):
             recipeToCook += recipe.get_text()
 
         #材料と作り方を返す
-        return OrderThing, recipeToCook
+        return OrderThing, recipeTime, recipeToCook
 
-    #chefご飯
+    #レシピ大百科
     else:
-        html = urlopen('https://chefgohan.gnavi.co.jp{}'.format(recipeURL))
+        html = urlopen('https://park.ajinomoto.co.jp/recipe{}'.format(recipeURL))
         soup = BeautifulSoup(html, 'html.parser')
 
         #材料
         OrderThing = ''
-        for Stuff in soup.findAll('td'):
+        for Stuff in zip(soup.findAll('dt'), soup.findAll('dd')):
             OrderThing += Stuff.get_text()
+
+        #調理時間
+        cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
+                (recipeTitle))
+        recipeTime = cur.fetchone()[0]
         
         #作り方
         recipeToCook = ''
-        for recipe in soup.findAll('p', {'class':'txt'}):
+        for recipe in soup.findAll('div', {'class':'txt numberTxt'}):
             recipeToCook += recipe.get_text()
 
         #材料と作り方を返す
-        return OrderThing, recipeToCook
+        return OrderThing, recipeTime, recipeToCook
 

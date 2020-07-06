@@ -1,6 +1,6 @@
 """
     C1:UI処理部
-    Date:2020/07/05
+    Date:2020/07/07
     purpose:ホーム画面, 検索結果画面, お気に入り登録画面, お気に入り表示画面,
             お気に入り削除画面, 履歴画面, レシピ表示画面を表示する
 """
@@ -83,7 +83,7 @@ def SearchResult(userID):
 
 """
     FunctionName    :   RecipeDisplay
-    Data            :   2020/07/04
+    Data            :   2020/07/07
     Designer        :   野田啓介
     Function        :   レシピ表示主処理
     Entry           :   userID --- ユーザー名
@@ -91,6 +91,7 @@ def SearchResult(userID):
                         userID       --- ユーザーID
                         recipeTitle  --- レシピタイトル(str型)
                         OrderThing   --- 材料名
+                        recipeTime   --- 調理時間
                         recipeToCook --- 作り方
 """
 @cookme.route('/RecipeDisplay/<userID>', methods=['POST'])
@@ -103,12 +104,13 @@ def RecipeDisplay(userID):
 
     #レシピの内容を取得する
     except BadRequestKeyError:
-        recipeTitle = request.form['recipeTitle']                    #レシピタイトル
+        recipeTitle = request.form['recipeTitle']                                #レシピタイトル
         print(recipeTitle)
-        OrderThing, recipeToCook = recipeDisplay(recipeTitle)        #材料と作り方
-        HistoryRegister(userID, selectURL(recipeTitle), recipeTitle) #履歴に格納
+        OrderThing, recipeTime, recipeToCook = recipeDisplay(recipeTitle)        #材料と調理時間と作り方
+        HistoryRegister(userID, selectURL(recipeTitle), recipeTitle)             #履歴に格納
         return render_template('RecipeDisplay.html', userID=userID, 
-            recipeTitle=recipeTitle, OrderThing=OrderThing, recipeToCook=recipeToCook) #RecipeDisplay.htmlを読み込む
+            recipeTitle=recipeTitle, OrderThing=OrderThing, recipeTime=recipeTime, 
+            recipeToCook=recipeToCook) #RecipeDisplay.htmlを読み込む
 
 
 

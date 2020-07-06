@@ -4,21 +4,23 @@
     <title>cook search</title>
 </head>
 <body>
-    {% if userID %}
-        <form action="{{ url_for('cookme.RecipeDisplay', userID=userID) }}" method="POST">
-            <button type="button" onclick="history.back()">戻る</button>
-            <p>検索された条件のレシピ一覧です(テスト)</p>
-            {% if recipeTitles == [] %}
-                <p>該当レシピなし</p>
-            {% else %}
-                {% for recipeTitle in recipeTitles %} 
-                    <p>
-                        <input type="submit" name="recipeTitle" value="{{ recipeTitle }}">
-                        <button type="submit" name="submit_button" value="{{ recipeTitle }}">削除</button>
-                    </p>
-                {% endfor %}
-            {% endif %}
-        </form>
-    {% endif %}
+    <center>
+        {% if userID %}
+            <form action="{{ url_for('cookme.RecipeDisplay', userID=userID) }}" method="POST">
+                <button type="button" onclick="history.back()">戻る</button>
+                <p>検索された条件のレシピ一覧です</p>
+                {% if recipeTitles == [] %}
+                    <p>該当レシピなし</p>
+                {% else %}
+                    {% for recipeTitle in recipeTitles %} 
+                        <p>
+                            <input type="submit" name="recipeTitle" value="{{ recipeTitle }}">
+                            <button type="submit" name="submit_button" value="{{ recipeTitle }}">削除</button>
+                        </p>
+                    {% endfor %}
+                {% endif %}
+            </form>
+        {% endif %}
+    </center>
 </body>
 </html>

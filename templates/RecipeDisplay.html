@@ -9,6 +9,11 @@
             <h1 class="recipeTitle">{{ recipeTitle }}の作り方</h1>
             <h2>材料</h2>
             <p>{{ OrderThing }}</p>
+
+            {% if recipeTime != -1 %}
+                <p>調理時間: {{ recipeTime }} 分</p>
+            {% endif %}
+            
             <h2>作り方</h2>
             <p>{{ recipeToCook }}</p>
             <button type="submit" name="recipeTitle" value="{{ recipeTitle }}">お気に入り登録</button>

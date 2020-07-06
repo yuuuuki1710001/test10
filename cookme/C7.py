@@ -1,6 +1,6 @@
 """
     C7      :   利用者情報管理部
-    Data    :   2020/06/28
+    Data    :   2020/07/06
     Purpose :   利用者情報のデータベース処理
 """
 
@@ -48,7 +48,7 @@ def userInput(username, password):
 
 """
     FunctionName    :   userOutput
-    Data            :   2020/06/28
+    Data            :   2020/07/06
     Designer        :   前原達也
     Function        :   ログインのためのデータベース操作
     Return          :   0...入力内容とデータベース内の情報が一致, 1...入力内容とデータベース内の情報が不一致

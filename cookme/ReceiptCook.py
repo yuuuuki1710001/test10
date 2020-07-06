@@ -14,7 +14,7 @@ ReceiptRead.convert(pic_name, CUT=True)
 # レシートデータから文字データを抽出する。出力ファイルは`output.txt`
 
 # あらかじめ作っておいたfood_list.txtを呼び出す。
-f = open('food_list.txt')
+f = open('food_list.txt', 'r', encoding="utf-8")
 data1 = f.read()
 f.close()
 lines = data1.split('\n')
