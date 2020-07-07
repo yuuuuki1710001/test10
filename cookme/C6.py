@@ -36,3 +36,4 @@ def HistoryDisplay(UserID):
     cur.execute('SELECT * FROM history WHERE UserID = %s',(UserID))
     historyTitles = [row[2] for row in cur.fetchall()]
     return historyTitles
+    

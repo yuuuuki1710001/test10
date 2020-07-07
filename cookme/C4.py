@@ -120,6 +120,7 @@ def recipeDisplay(recipeTitle):
         recipeTime = cur.fetchone()[0]
         
         #作り方
+        
         recipeToCook = ''
         for recipe in soup.findAll('div', {'class':'step-text-wrap'}):
             recipeToCook += recipe.get_text()

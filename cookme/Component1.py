@@ -191,5 +191,3 @@ def FavoriteDeletion(userID, recipeTitle):
 def History(userID):
     historyTitles = HistoryDisplay(userID) #履歴のレシピ一覧
     return render_template('History.html', userID=userID, historyTitles=historyTitles) #History.htmlを読み込む
-
-

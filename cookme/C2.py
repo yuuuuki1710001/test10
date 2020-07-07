@@ -120,6 +120,7 @@ def logout():
     return redirect(url_for('user.login'))
 
 
+
 # @bp.before_app_request
 # @app.before_request
 # def load_logged_in_user():
