@@ -54,6 +54,6 @@ Entry : C1.py
 Return : なし
 """
 def FavoriteDelete(UserID,recipeTitle):
-    cur.execute('DELETE * FROM favorite WHERE UserID = %s'
+    cur.execute('DELETE FROM favorite WHERE UserID = %s'
                'AND recipeTitle = %s',(UserID, recipeTitle))
     conn.commit()

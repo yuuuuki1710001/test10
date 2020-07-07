@@ -20,7 +20,7 @@ Entry : C1.py
 Return : なし
 """
 def HistoryRegister(UserID,recipeURL,recipeTitle):
-    cur.execute('INSERT INTO favorite (UserID,recipeURL,recipeTitle) VALUES (%s,%s,%s)',(UserID, recipeURL, recipeTitle))
+    cur.execute('INSERT INTO history (UserID,recipeURL,recipeTitle) VALUES (%s,%s,%s)',(UserID, recipeURL, recipeTitle))
     conn.commit()
 
 """

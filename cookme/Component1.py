@@ -6,12 +6,13 @@
 """
 
 from flask import *
+from flask_bootstrap import Bootstrap
 from werkzeug.exceptions import BadRequestKeyError
 import pymysql
 from cookme.C3 import CleanWords, IngredientsInputs
 from cookme.C4 import selectURL, recipeDisplay
-from cookme.FavoriteMain import FavoriteRegister, FavoriteDelete, FavoriteDisplay
-from cookme.HistoryMain import HistoryDisplay, HistoryRegister
+from cookme.C5 import FavoriteRegister, FavoriteDelete, FavoriteDisplay
+from cookme.C6 import HistoryDisplay, HistoryRegister
 
 #MySQLに接続する
 conn = pymysql.connect(
@@ -61,6 +62,12 @@ def SearchResult(userID):
     OrderThing = request.form['OrderThing']           #材料名
     recipeTime = request.form['recipeTime']           #調理時間
 
+    #材料名も調理時間も入力されていないとき
+    if not OrderThing and not recipeTime:
+        session.clear()
+        flash('材料名か調理時間を入力してください', 'message')
+        return redirect(url_for('cookme.Home', userID=userID))
+
     #材料名が入力されていないとき
     if not OrderThing:
         OrderThing = ''
@@ -68,12 +75,6 @@ def SearchResult(userID):
     #調理時間が入力されていないとき
     if not recipeTime:
         recipeTime = -1
-
-    #材料名も調理時間も入力されていないとき
-    if (not OrderThing) and (not recipeTime):
-        session.clear()
-        flash('材料名か調理時間を入力してください', 'message')
-        return redirect(url_for('cookme.Home', userID=userID))
 
 
     recipeTitles = IngredientsInputs(OrderThing, recipeTime) #レシピの検索候補
@@ -147,7 +148,7 @@ def FavoriteRegistration(userID):
     registerFlag = FavoriteRegister(userID, cur.fetchone()[0], recipeTitle)              #フラグ(0:登録, 1:既に登録されている)
 
     #お気に入りに登録するとき
-    if registerFlag == 0:
+    if registerFlag == 1:
         flash('お気に入りに登録しました', 'message')
 
     #既に登録されているとき

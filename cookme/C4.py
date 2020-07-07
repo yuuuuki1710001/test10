@@ -134,8 +134,8 @@ def recipeDisplay(recipeTitle):
 
         #材料
         OrderThing = ''
-        for Stuff in zip(soup.findAll('dt'), soup.findAll('dd')):
-            OrderThing += Stuff.get_text()
+        for Stuff, Quantity in zip(soup.findAll('dt'), soup.findAll('dd')):
+            OrderThing += Stuff.get_text() + ' ' +  Quantity.get_text() + ' '
 
         #調理時間
         cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 

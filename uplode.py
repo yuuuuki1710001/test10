@@ -14,15 +14,15 @@ def allowed_file(filename):
 
 @app.route('/')
 def show_index():
-    return render_template('index.html')
+    return render_template('upload.html')
 
 @app.route('/upload', methods=['POST'])
 def do_upload():
-    file = request.files['xhr2upload']
+    file = request.files['upload_file']
     if file and allowed_file(file.filename):
         filename = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    response = make_response(url_for('static', filename='uploads/'+filename, _external=True))
+    response = make_response(url_for('static', filename='/upload/'+filename, _external=True))
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
