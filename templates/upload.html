@@ -1,0 +1,79 @@
+<div id="drop_zone">Drop a file here</div>
+    <output id="list"></output>
+    <form id="my_form" enctype=multipart/form-data>
+        <input type="file" style="display:inline" name="upload_file">
+        <br>
+        <button type="button" onclick="file_upload()">アップロード</button>
+    </form>
+
+<script src = C:\Users\Noda0702\flask\js></script>
+    #drop_zone{
+        width: 80%;
+        height: 200px;
+        border: 1px dotted black;
+        border-radius: 1rem;
+        margin: auto;
+        margin-top: 2rem;
+        font-size: 3rem;
+    }
+
+    function handleFileSelect(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+      
+        files = evt.dataTransfer.files; // FileList object.
+      
+        // 以下に必要なFile Objectのプロパティを記述
+        var output = [];
+        for (var i = 0, f; f = files[i]; i++) {
+          output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                      f.size, ' bytes, last modified: ',
+                      f.lastModifiedDate.toLocaleDateString(), '</li>');
+        }
+        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+      }
+      
+      function handleDragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy'; 
+      }
+      
+      // イベントリスナーを設定
+      var dropZone = document.getElementById('drop_zone');
+      dropZone.addEventListener('dragover', handleDragOver, false);
+      dropZone.addEventListener('drop', handleFileSelect, false);
+
+      function file_upload()
+{
+    // フォームデータを取得
+    let formdata = () => new FormData($('#my_form').get(0));
+    // ファイルが未登録なら一番最初のファイルを追加
+    // 複数ファイルアップロードの場合ここを修正
+    if($('input[name="upload_file"]').val() == ""){
+      formdata.append('upload_file',files[0])
+    }
+
+    //非同期通信
+    $.ajax({
+        url  : "/upload",
+        type : "POST",
+        data : formdata,
+        cache       : false,
+        contentType : false,
+        processData : false,
+        dataType: 'html',
+
+    })
+    .done(function(data, textStatus, jqXHR){
+        console.log(data);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        console.log("fail");
+    })
+    .always(function(data){
+        console.log("complete")
+    });
+}
+
+

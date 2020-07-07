@@ -1,0 +1,44 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>cook search</title>
+</head>
+<body>
+    <center>
+        {% if userID %}
+            <h1>Cook me!</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        
+        
+            <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST">
+                <button type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button>
+            </form>
+
+            <form action="{{ url_for('cookme.History', userID=userID) }}" method="POST">
+                <button type="submit" name="userID" value="{{ userID }}">履歴</button>
+            </form>
+
+            <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
+                <div>
+                    <p>材料名と調理時間を入力してください</p>
+                    <input type="text" name="OrderThing" placeholder="材料名">
+                </div>
+                <div>
+                    <input type="text" name="recipeTime" placeholder="調理時間">
+                </div>
+                <button type="submit" name="userID" value="{{ userID }}">検索</button>
+                <button type="button" onclick="history.back()">ログアウト</button>
+            </form>
+        {% endif %}
+    </center>
+</body>
+</html>
