@@ -58,12 +58,19 @@ def CleanWords(OrderThing):
     return:         recipeTitles --- レシピの検索候補(list型)
 """
 def IngredientsInputs(OrderThing, recipeTime):
-    words = CleanWords(OrderThing)
+    words = CleanWords(OrderThing) 
     print(words)
 
     #レシピ一覧を格納するリストを用意する
     recipeTitles = []
 
+    #時間が入力された場合
+    
+    cur.execute('SELECT * FROM cookpages WHERE recipeTime<=%s',recipeTime)
+    searchTitlesT1= [row[1] for row in cur.fetchall()]
+    recipeTitles.extend(searchTitlesT1)
+    return recipeTitles
+    
     #材料が3つ入力された場合
     if len(words) == 3:
         #材料から検索
