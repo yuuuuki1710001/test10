@@ -193,3 +193,4 @@ def History(userID):
     return render_template('History.html', userID=userID, historyTitles=historyTitles) #History.htmlを読み込む
 
 
+
