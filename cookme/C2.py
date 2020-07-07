@@ -12,6 +12,7 @@ from cookme.C7 import userInput, userOutput
 
 user = Blueprint('user', __name__)
 
+
 """
     FunctionName    :   login
     Data            :   2020/07/06

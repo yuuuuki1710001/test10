@@ -11,6 +11,7 @@ conn = pymysql.connect(
 cur = conn.cursor()
 cur.execute('USE cook')
 
+
 """
 FunctionName : FavoriteRegister
 Date : 6/30

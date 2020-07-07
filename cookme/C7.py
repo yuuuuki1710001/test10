@@ -8,6 +8,7 @@
 import pymysql
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 """
     FunctionName    :   userInput
     Data            :   2020/06/30
