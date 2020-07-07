@@ -1,17 +1,20 @@
-from flask import Flask, request, url_for, render_template, make_response
 import os
+from flask import Flask, render_template, request
+from flask_dropzone import Dropzone
 
-SECRET_KEY = 'development key'
-UPLOAD_FOLDER = 'static/uploads'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config.from_object(__name__)
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+app.config.update(
+    UPLOADED_PATH=os.path.join(basedir, 'uploads'),
+    # Flask-Dropzone config:
+    DROPZONE_ALLOWED_FILE_TYPE='image',
+    DROPZONE_MAX_FILE_SIZE=3,
+    DROPZONE_MAX_FILES=30,
+)
 
+<<<<<<< HEAD
 @app.route('/')
 def show_index():
     return render_template('upload.html')
@@ -25,6 +28,18 @@ def do_upload():
     response = make_response(url_for('static', filename='/upload/'+filename, _external=True))
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+=======
+dropzone = Dropzone(app)
+
+
+@app.route('/', methods=['POST', 'GET'])
+def upload():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        f.save(os.path.join(app.config['UPLOADED_PATH'], f.filename))
+    return render_template('index.html')
+
+>>>>>>> b31630ebd95cc5dad9b75dcee0c6d300708b22c6
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug=True)
