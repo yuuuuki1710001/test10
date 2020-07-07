@@ -65,10 +65,9 @@ def IngredientsInputs(OrderThing, recipeTime):
     recipeTitles = []
 
     #時間が入力された場合
-    if len(recipeTime)==1:
-        cur.execute('SELECT * FROM cookpages WHERE recipeTime<=%s',recipeTime)
-        searchTitlesT1= [row[1] for row in cur.fetchall()]
-        recipeTitles.extend(searchTitlesT1)
+    cur.execute('SELECT * FROM cookpages WHERE recipeTime<=%s',recipeTime)
+    searchTitlesT1= [row[1] for row in cur.fetchall()]
+    recipeTitles.extend(searchTitlesT1)
     return recipeTitles
     
     #材料が3つ入力された場合
