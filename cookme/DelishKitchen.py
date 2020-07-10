@@ -2,6 +2,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pymysql
 import re
+import string
 
 conn = pymysql.connect(
                     user='admin',
@@ -90,6 +91,9 @@ def getLinks(pageURL, level, pages, pageURLs):
                 OrderThing = OrderThing.find('a').get_text()
             except AttributeError: #spanタグから取得
                 OrderThing = OrderThing.find('span').get_text()
+
+            OrderThing = re.sub(r'〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', OrderThing)
+            OrderThing = OrderThing.strip(string.punctuation + string.whitespace)
             OrderThings.append(OrderThing)
             if len(OrderThings) > 4:
                 break

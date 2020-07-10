@@ -99,25 +99,14 @@ def IngredientsInputs(OrderThing, recipeTime):
         recipeTitles.extend(searchTitles3)
 
         #タイトルから検索
-        """
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[0]))
-        searchTitlesT1 = [row[1] for row in cur.fetchall()]
+        cur.execute('SELECT * FROM cookpages')
+        searchTitlesT = [row[1] for row in cur.fetchall()] #レシピタイトルを取得
 
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[1]))
-        searchTitlesT2 = [row[1] for row in cur.fetchall()]
+        #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+        for recipeTitle in searchTitlesT:
+            if (words[0] in recipeTitle) and (words[1] in recipeTitle) and (words[2] in recipeTitle):
+                recipeTitles.append(recipeTitle)
 
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[2]))
-        searchTitlesT3 = [row[1] for row in cur.fetchall()]
-        """
-
-        """
-        recipeTitles.extend(searchTitlesT1)
-        recipeTitles.extend(searchTitlesT2)
-        recipeTitles.extend(searchTitlesT3)
-        """
         
         return recipeTitles
     
@@ -163,19 +152,15 @@ def IngredientsInputs(OrderThing, recipeTime):
         
     
         #タイトルから検索
-        """         
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[0]))
-        searchTitlesT1 = [row[1] for row in cur.fetchall()]
+        cur.execute('SELECT * FROM cookpages')
+        searchTitlesT = [row[1] for row in cur.fetchall()] #レシピタイトルを取得
 
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[1]))
-        searchTitlesT2 = [row[1] for row in cur.fetchall()]
+        for recipeTitle in searchTitlesT: 
 
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[2]))
-        searchTitlesT3 = [row[1] for row in cur.fetchall()]
-        """
+            #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+            if (words[0] in recipeTitle) and (words[1] in recipeTitle):
+                recipeTitles.append(recipeTitle)
+
 
         return recipeTitles
     
@@ -198,23 +183,29 @@ def IngredientsInputs(OrderThing, recipeTime):
         recipeTitles.extend(searchTitles3)
 
         #タイトルから検索
-        """
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[0]))
-        searchTitlesT1 = [row[1] for row in cur.fetchall()]
+        cur.execute('SELECT * FROM cookpages')
+        searchTitlesT = [row[1] for row in cur.fetchall()]
 
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[1]))
-        searchTitlesT2 = [row[1] for row in cur.fetchall()]
+        #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+        for recipeTitle in searchTitlesT:
+            if words[0] in recipeTitle:
+                recipeTitles.append(recipeTitle)
 
-        cur.execute('SELECT * FROM cookpages WHERE recipeTitle like %%s%',
-            (words[2]))
-        searchTitlesT3 = [row[1] for row in cur.fetchall()]
-        """
         return recipeTitles
     
     #それ以外
     else:
+
+        #タイトルから検索
+        for word in words:
+            cur.execute('SELECT * FROM cookpages')
+            searchTitlesT = [row[1] for row in cur.fetchall()]
+
+            #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+            for recipeTitle in searchTitlesT:
+                if word in recipeTitle:
+                    recipeTitles.append(recipeTitle)
+
         return recipeTitles
 
     

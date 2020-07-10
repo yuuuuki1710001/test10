@@ -2,6 +2,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pymysql
 import re
+import string
 
 conn = pymysql.connect(
                     user='admin',
@@ -72,6 +73,8 @@ def getLinks(PageUrl, level, pages, pageURLs):
         OrderThings = []
         for OrderThing in bs.findAll('div', {'class':'ingredient_name'}):
             OrderThing = OrderThing.get_text()
+            OrderThing = re.sub(r'〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', OrderThing)
+            OrderThing = OrderThing.strip(string.punctuation + string.whitespace)
             OrderThings.append(OrderThing)
         
         while len(OrderThings) < 3:
