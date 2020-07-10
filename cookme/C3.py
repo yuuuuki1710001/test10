@@ -99,7 +99,14 @@ def IngredientsInputs(OrderThing, recipeTime):
         recipeTitles.extend(searchTitles3)
 
         #タイトルから検索
-        cur.execute('SELECT * FROM cookpages')
+        #調理時間が入力されていないとき
+        if recipeTime == -1:
+            cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
+
+        #調理時間が入力されているとき
+        else:
+            cur.execute('SELECT * FROM cookpages WHERE recipeTime <= %s'
+                'AND recipeTime != -1', (recipeTime))
         searchTitlesT = [row[1] for row in cur.fetchall()] #レシピタイトルを取得
 
         #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
@@ -152,7 +159,14 @@ def IngredientsInputs(OrderThing, recipeTime):
         
     
         #タイトルから検索
-        cur.execute('SELECT * FROM cookpages')
+        #調理時間が入力されていないとき
+        if recipeTime == -1:
+            cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
+
+        #調理時間が入力されているとき
+        else:
+            cur.execute('SELECT * FROM cookpages WHERE recipeTime <= %s'
+                'AND recipeTime != -1', (recipeTime))
         searchTitlesT = [row[1] for row in cur.fetchall()] #レシピタイトルを取得
 
         for recipeTitle in searchTitlesT: 
@@ -182,8 +196,16 @@ def IngredientsInputs(OrderThing, recipeTime):
         recipeTitles.extend(searchTitles2)
         recipeTitles.extend(searchTitles3)
 
+
         #タイトルから検索
-        cur.execute('SELECT * FROM cookpages')
+        #調理時間が入力されていないとき
+        if recipeTime == -1:
+            cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
+
+        #調理時間が入力されているとき
+        else:
+            cur.execute('SELECT * FROM cookpages WHERE recipeTime <= %s'
+                'AND recipeTime != -1', (recipeTime))
         searchTitlesT = [row[1] for row in cur.fetchall()]
 
         #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
@@ -198,7 +220,15 @@ def IngredientsInputs(OrderThing, recipeTime):
 
         #タイトルから検索
         for word in words:
-            cur.execute('SELECT * FROM cookpages')
+
+            #調理時間が入力されていないとき
+            if recipeTime == -1:
+                cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
+
+            #調理時間が入力されているとき
+            else:
+                cur.execute('SELECT * FROM cookpages WHERE recipeTime <= %s'
+                    'AND recipeTime != -1', (recipeTime))
             searchTitlesT = [row[1] for row in cur.fetchall()]
 
             #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
