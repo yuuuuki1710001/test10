@@ -1,0 +1,29 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>recipe</title>
+</head>
+<body>
+    <center>
+        {% if userID %}
+            <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
+                <button type="button" onclick="history.back()">戻る</button>
+                <p>読み込むことができた材料名です</p>
+                {% if OrderThings == [] %}
+                    <p>材料を読み込むことができませんでした</p>
+                {% else %}
+                    {% for OrderThing in OrderThings %} 
+                        <p>
+                            <input type="submit" name="OrderThing" value="{{ OrderThing }}">
+                        </p>
+                    {% endfor %}
+                {% endif %}
+                <p>調理時間を入力してください</p>
+                <div>
+                    <input type="text" name="recipeTime" placeholder="調理時間">
+                </div>
+            </form>
+        {% endif %}
+    </center>
+</body>
+</html>
