@@ -29,11 +29,11 @@
                 <ul>
                     <li class = "name">
                         <label for = "name">ID</label>
-                        <input type = "text" name = "UserID", placeholder = "ユーザID">
+                        <input type = "text" name = "UserID" placeholder = "ユーザID">
                     </li>
                     <li>
                         <label for = "pass">PASS</label>
-                        <input type = "password" name = "password", placeholder = "英字数字を含む8~16字">
+                        <input type = "password" name = "password" placeholder = "英字数字を含む8~16字">
                     </li>
                 </ul>
 
@@ -43,8 +43,7 @@
 
         <form action = "{{url_for('user.createUser')}}" mathod = "POST">
                 <br><br><br>
-                <button type = "submit", onClick = "location.href = 'create_user.html'">新規登録はコチラ</button>
-
+                <button type = "submit" onClick = "location.href = 'create_user.html'">新規登録はコチラ</button>
             </center>
         </form>
 

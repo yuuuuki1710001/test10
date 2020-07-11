@@ -43,8 +43,8 @@ cookme = Blueprint('cookme', __name__)
 """
 @cookme.route('/Home/<userID>', methods=['GET', 'POST'])
 def Home(userID):
-    #userID = request.form['userID']
     return render_template('Home.html', userID=userID) #Home.htmlを読み込む
+    
 
 
 """
@@ -187,7 +187,8 @@ def FavoriteDeletion(userID, recipeTitle):
                         userID        --- ユーザーID
                         HistoryTitles --- 検索候補のレシピタイトル(list型)
 """
-@cookme.route('/History/<userID>', methods=['POST'])
+@cookme.route('/History/<userID>', methods=('GET', 'POST'))
 def History(userID):
     historyTitles = HistoryDisplay(userID) #履歴のレシピ一覧
     return render_template('History.html', userID=userID, historyTitles=historyTitles) #History.htmlを読み込む
+

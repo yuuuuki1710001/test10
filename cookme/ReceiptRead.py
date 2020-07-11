@@ -107,7 +107,12 @@ def convert(filename=None, capture=False, CUT=False):
         # Webカメラで読み込むこともやりたかったがUbuntuがうまく認識してくれず、断念。
     #    cap = cv2.VideoCapture(0)
     elif filename :
+
+        #絶対パス
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        filename = os.path.join(basedir, filename)
         im = cv2.imread(filename)
+        
     filename = filename[:-4]
     # 拡張子を取り除いた形で記録する
     if CUT:

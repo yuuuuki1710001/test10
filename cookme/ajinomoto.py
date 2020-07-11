@@ -84,7 +84,7 @@ def getLinks(pageURL, level, pages, pageURLs):
         #レシピの材料を取得する
         OrderThings = []
         for OrderThing in bs.findAll('dt', {'class': ''}): 
-            OrderThing = re.sub(r'〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', OrderThing)
+            OrderThing = re.sub(r'☆|★|＊|〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', OrderThing)
             OrderThing = OrderThing.strip(string.punctuation + string.whitespace)
             OrderThings.append(OrderThing) #材料名を取得
             if len(OrderThings) > 4:
