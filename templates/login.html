@@ -5,7 +5,7 @@
     <head>
         <meta charset = "UTF-8">
         <title>CookME</title>
-        <link rel = "stylesheet" href = "..\static\login.css">
+        <link rel = "stylesheet" href = "../static/login.css">
     </head>
 
     <body>
@@ -20,8 +20,8 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         <ul class=flashes>
-                        {% for category, message in messages %}
-                            <li class="{{ category }}">{{ message }}</li>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
                         {% endfor %}
                         </ul>
                     {% endif %}
@@ -44,7 +44,7 @@
 
         <form action = "{{url_for('user.createUser')}}" mathod = "POST">
                 <br>
-                <button class="button2" type = "submit" onClick = "location.href = 'CreateUser.html'">新規登録はコチラ</button><br><br>
+                <button class="button2" type = "submit" onClick = "location.href = 'create_user.html'">新規登録はコチラ</button><br><br>
             </center>
         </form>
     </div>

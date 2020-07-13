@@ -1,9 +1,16 @@
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>recipe</title>
+    <title>CookME</title>
+    <link rel = "stylesheet" href = "../static/FavoriteRegistration.css">
 </head>
 <body>
+<div class="bg-mask">
+<center>
+        <h1>
+            <center>CookME</center>
+        </h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class=flashes>
@@ -14,9 +21,10 @@
         {% endif %}
     {% endwith %}
 
-
     <form method="POST">
-        <button type="button" onclick="history.back()">戻る</button>
+        <button class="button" type="button" onclick="history.back()">戻る</button><br><br>
     </form>
+</center>
+</div>
 </body>
 </html>

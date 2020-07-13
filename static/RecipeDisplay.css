@@ -14,6 +14,15 @@ h1 {
     background: linear-gradient(transparent 70%, #fdcaf2 70%);
 }
 
+h2 {
+    font-size: 150%;
+    font-family: 'Ubuntu Mono', monospace;
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(transparent 70%, #fdcaf2 70%);
+}
+
 body {
     background-image: url(../static/background1.jpg);
     background-repeat: no-repeat;
@@ -30,13 +39,13 @@ body {
     background: rgba(255,255,255,0.8);
 }
 
-p {
+h3 {
     position: relative;
     display: inline-block;
     padding: 0 55px;
 }
 
-p:before, p:after {
+h3:before, h3:after {
     content: '';
     position: absolute;
     top: 50%;
@@ -47,11 +56,11 @@ p:before, p:after {
     border-bottom: solid 1px black;
 }
 
-p:before {
+h3:before {
     left:0;
 }
 
-p:after {
+h3:after {
     right: 0;
 }
 
