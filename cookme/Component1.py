@@ -9,10 +9,10 @@ from flask import *
 from flask_bootstrap import Bootstrap
 from werkzeug.exceptions import BadRequestKeyError
 import pymysql
-from cookme.C3 import CleanWords, IngredientsInputs
-from cookme.C4 import selectURL, recipeDisplay
-from cookme.C5 import FavoriteRegister, FavoriteDelete, FavoriteDisplay
-from cookme.C6 import HistoryDisplay, HistoryRegister
+from cookme.Component3 import CleanWords, IngredientsInputs
+from cookme.Component4 import selectURL, recipeDisplay
+from cookme.Component5 import FavoriteRegister, FavoriteDelete, FavoriteDisplay
+from cookme.Component6 import HistoryDisplay, HistoryRegister
 
 #MySQLに接続する
 conn = pymysql.connect(
@@ -61,6 +61,7 @@ def Home(userID):
 def SearchResult(userID):
     OrderThing = request.form['OrderThing']           #材料名
     recipeTime = request.form['recipeTime']           #調理時間
+
 
     #材料名も調理時間も入力されていないとき
     if not OrderThing and not recipeTime:

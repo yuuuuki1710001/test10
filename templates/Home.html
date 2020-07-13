@@ -1,52 +1,57 @@
+<!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <title>cook search</title>
+    <title>CookME</title>
+    <link rel = "stylesheet" href = "..\static\Home.css">
 </head>
-<body>
-    <center>
-        {% if userID %}
-            <h1>Cook me!</h1>
 
+<body class="animation">
+<div class="bg-mask">
+    <center>
+    <h1>CookME</h1>
+        {% if userID %}
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <ul class=flashes>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
                     {% endfor %}
                     </ul>
                 {% endif %}
             {% endwith %}
-        
-        
-            <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST">
-                <button type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button>
-            </form>
-
-            <form action="{{ url_for('cookme.History', userID=userID) }}" method="POST">
-                <button type="submit" name="userID" value="{{ userID }}">履歴</button>
-            </form>
-
-            <form action="{{ url_for('img.upload', userID=userID) }}" method="POST" enctype="multipart/form-data">
-                <p>画像をアップロードできます</p>
-                <input type="file" name="file">
-                <input type="submit" value="submit">
-            </form>
 
             <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
                 <div>
-                    <p>材料名と調理時間を入力してください</p>
+                    <p>材料名と調理時間を入力してください(調理時間の数値は半角で入力してください。全角で入力した場合はレシピの候補が表示されません)</p><br>
                     <input type="text" name="OrderThing" placeholder="材料名">
                 </div>
                 <div>
                     <input type="text" name="recipeTime" placeholder="調理時間">
-                </div>
-                <button type="submit" name="userID" value="{{ userID }}">検索</button>
+                </div><br>
+                <button class="button" type="submit" name="userID" value="{{ userID }}">検索</button>
             </form>
+
+            <form action="{{ url_for('img.upload', userID=userID) }}" method="POST" enctype="multipart/form-data">
+                <p>画像をアップロードできます</p><br>
+                <input type="file" name="file">
+                <input type="submit" value="submit">
+            </form>
+
+            <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST"><br>
+                <button class="button" type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button><br>
+            </form>
+
+            <form action="{{ url_for('cookme.History', userID=userID) }}" method="POST">
+                <button class="button" type="submit" name="userID" value="{{ userID }}">履歴</button><br><br>
+            </form>
+
             <form action="{{ url_for('user.logout') }}" method="GET">
-                <button type="submit">ログアウト</button>
-            </form>
+                <button class="button" type="submit">logout</button>
+            </form><br>
         {% endif %}
     </center>
+</div>
 </body>
 </html>

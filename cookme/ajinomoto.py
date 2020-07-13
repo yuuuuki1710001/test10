@@ -18,14 +18,14 @@ cur.execute('USE cook')
 def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3):
 
     #テーブルに格納している内容を取得する
-    cur.execute('SELECT * FROM cookpages2 WHERE recipeURL = %s'
+    cur.execute('SELECT * FROM cookpages WHERE recipeURL = %s'
         'AND recipeTitle = %s'
         'AND recipeTime = %s', 
         (recipeURL, recipeTitle, recipeTime))
 
     #取得した数が0の場合はURLとタイトル名と調理時間と材料をデータベースに格納する
     if cur.rowcount == 0:
-        cur.execute('INSERT INTO cookpages2 (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
+        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
         'VALUES (%s, %s, %s, %s, %s, %s)', (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
 
         #格納した情報を保存する
@@ -34,7 +34,7 @@ def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, 
 
 #recipeURLをリストに格納する
 def loadPages():
-    cur.execute('SELECT * FROM cookpages2')
+    cur.execute('SELECT * FROM cookpages')
     pages = [row[0] for row in cur.fetchall()]
     return pages
 
@@ -42,14 +42,14 @@ def loadPages():
 #レシピの検索一覧とレシピを交互にたどってクローリングする
 def getLinks(pageURL, level, pages, pageURLs):
 
-    #深さを9までとする
-    if level > 9:
+    #深さを19までとする
+    if level > 29:
         return
 
     pageURL = bytes(pageURL, 'utf-8')
     pageURL = pageURL.decode('ascii', 'ignore')
     
-    #シェフご飯のレシピ検索候補ページのURLをオープンする
+    #レシピ大百科のレシピ検索候補ページのURLをオープンする
     try:
         html = urlopen('https://park.ajinomoto.co.jp/recipe{}'.format(pageURL))
     except InvalidURL:
@@ -84,7 +84,7 @@ def getLinks(pageURL, level, pages, pageURLs):
         #レシピの材料を取得する
         OrderThings = []
         for OrderThing in bs.findAll('dt', {'class': ''}): 
-            OrderThing = re.sub(r'☆|★|＊|〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', OrderThing)
+            OrderThing = OrderThing.get_text()
             OrderThing = OrderThing.strip(string.punctuation + string.whitespace)
             OrderThings.append(OrderThing) #材料名を取得
             if len(OrderThings) > 4:
@@ -99,7 +99,7 @@ def getLinks(pageURL, level, pages, pageURLs):
 
         #レシピのサイトの関連ワードのURLを全て見つける
         foodStuffLinks = bs.findAll('a', href=re.compile('/search/'))
-        foodStuffLinks = [foodStuffLink.attrs['href'].replace('https://park.ajinomoto.co.jp/recipe', '')
+        foodStuffLinks = [foodStuffLink.attrs['href'].replace('https://park.ajinomoto.co.jp/recipe', '') + '&tab=pop&o=300'
                             for foodStuffLink in foodStuffLinks]
 
         for foodStuffLink in foodStuffLinks:
@@ -114,6 +114,6 @@ def getLinks(pageURL, level, pages, pageURLs):
             getLinks(foodStuffLink, level+1, pages, pageURLs)
 
 #検索候補ページ(材料)を牛肉からクローリングする(材料はなんでもいい)
-getLinks('/search/?search_word=%E7%89%9B%E8%82%89', 0, loadPages(), [])
+getLinks('/search/?search_word=%E7%89%9B%E8%82%89&tab=pop&o=300', 0, loadPages(), [])
 cur.close()
 conn.close()
