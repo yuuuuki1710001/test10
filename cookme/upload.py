@@ -33,6 +33,15 @@ def upload(userID):
 @img.route('/SearchOrderThing/<userID>/<fileName>', methods=['GET', 'POST'])
 def SearchOrderThing(userID, fileName):
     search_words = ReadOrderThing(fileName)
+
+    #材料を読み込んだらファイルを削除
+    fileName = fileName.replace('.jpg', '')
+    os.remove('cookme/{}.jpg'.format(fileName))
+    os.remove('cookme/{}_drawcont.jpg'.format(fileName))
+    os.remove('cookme/{}_gray.jpg'.format(fileName))
+    os.remove('cookme/{}_rect_th.jpg'.format(fileName))
+    os.remove('cookme/{}_th.jpg'.format(fileName))
+
     return render_template('SearchOrderThing.html', userID=userID,
         OrderThings=search_words)
 

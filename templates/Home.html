@@ -15,8 +15,8 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <ul class=flashes>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
                     {% endfor %}
                     </ul>
                 {% endif %}
@@ -24,7 +24,7 @@
 
             <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
                 <div>
-                    <p>材料名と調理時間を入力してください</p><br>
+                    <p>材料名と調理時間を入力してください(調理時間のは半角の整数値で入力してください。そうしないとレシピの候補が出ません。)</p><br>
                     <input type="text" name="OrderThing" placeholder="材料名">
                 </div>
                 <div>
