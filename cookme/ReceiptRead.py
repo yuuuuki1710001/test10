@@ -43,7 +43,6 @@ def cont_edge(im, filename):
     cv2.imwrite(filename + '_gray.jpg', im_gray)
     print(filename + '_gray.jpg')
     im_blur = cv2.fastNlMeansDenoising(im_gray)  # 画像のノイズを取り除く
-    # _,
     im_th = cv2.threshold(im_blur, 127, 255, cv2.THRESH_BINARY)
     # 2値化をする
     im_th = cv2.adaptiveThreshold(im_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY, 15, 5)
@@ -103,9 +102,6 @@ def cont_edge(im, filename):
 def convert(filename=None, capture=False, CUT=False):
     if filename == None and capture == False:
         pass
-    #elif capture == True:
-        # Webカメラで読み込むこともやりたかったがUbuntuがうまく認識してくれず、断念。
-    #    cap = cv2.VideoCapture(0)
     elif filename :
 
         #絶対パス
@@ -129,7 +125,6 @@ def convert(filename=None, capture=False, CUT=False):
     print(rect_th_filename)
 #    show_img(im_rect_th)
 # 既存のoutput.txtファイルが存在すればそれを消去して新たにoutput.txtを作成
-# 文字認識についてはGoogleのAPIを利用させてもらった。
     if glob.glob('output.txt'):
         os.remove('output.txt')
 #tesseractによる画像の文字認識
