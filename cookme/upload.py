@@ -41,6 +41,7 @@ def SearchOrderThing(userID, fileName):
     os.remove('cookme/{}_gray.jpg'.format(fileName))
     os.remove('cookme/{}_rect_th.jpg'.format(fileName))
     os.remove('cookme/{}_th.jpg'.format(fileName))
+    
 
     return render_template('SearchOrderThing.html', userID=userID,
         OrderThings=search_words)
