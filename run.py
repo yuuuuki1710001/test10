@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from cookme import Component1, Component2, upload
 
@@ -8,4 +9,5 @@ app.register_blueprint(upload.img)
 app.config['SECRET_KEY'] = 'recipe key'
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host="0.0.0.0", port=port, debug=True)
