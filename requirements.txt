@@ -7,6 +7,7 @@ cryptography==2.9.2
 cycler==0.10.0
 Flask==1.1.2
 Flask-Dropzone==1.5.4
+gunicorn==20.0.4
 idna
 itsdangerous==1.1.0
 Jinja2==2.11.2
