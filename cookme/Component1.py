@@ -6,7 +6,7 @@
 """
 
 from flask import *
-from flask_bootstrap import Bootstrap
+#from flask_bootstrap import Bootstrap
 from werkzeug.exceptions import BadRequestKeyError
 import pymysql
 from cookme.Component3 import CleanWords, IngredientsInputs
