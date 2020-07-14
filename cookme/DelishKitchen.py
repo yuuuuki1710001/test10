@@ -17,14 +17,14 @@ cur.execute('USE cook')
 def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3):
 
     #データベースに格納している内容を取得する
-    cur.execute('SELECT * FROM cookpages WHERE recipeURL = %s'
+    cur.execute('SELECT * FROM cookpages2 WHERE recipeURL = %s'
         'AND recipeTitle = %s'
         'AND recipeTime = %s', 
         (recipeURL, recipeTitle, recipeTime))
 
     #取得した数が0の場合はurlとタイトル名をデータベースに格納する
     if cur.rowcount == 0:
-        cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
+        cur.execute('INSERT INTO cookpages2 (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
         'VALUES (%s, %s, %s, %s, %s, %s)', (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
 
         #格納した情報を保存する
@@ -32,7 +32,7 @@ def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, 
 
 #recipeURLをリストに格納する
 def loadPages():
-    cur.execute('SELECT * FROM cookpages')
+    cur.execute('SELECT * FROM cookpages2')
     pages = [row[0] for row in cur.fetchall()]
     return pages
 
