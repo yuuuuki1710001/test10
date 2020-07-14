@@ -5,7 +5,7 @@ import re
 import string
 
 conn = pymysql.connect(
-                    user='admin',
+                    user='root',
                     passwd='10pan',
                     db='cook', 
                     port=3306,
