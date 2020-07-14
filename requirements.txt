@@ -1,4 +1,4 @@
-beautifulsoup4 @ file:///D:/bld/beautifulsoup4_1589761059039/work
+beautifulsoup4==4.9.1
 brotlipy==0.7.0
 certifi==2020.6.20
 cffi==1.14.0
@@ -7,17 +7,17 @@ cryptography==2.9.2
 cycler==0.10.0
 Flask==1.1.2
 Flask-Dropzone==1.5.4
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1593328102638/work
+idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 kiwisolver==1.2.0
 MarkupSafe==1.1.1
-matplotlib @ file:///D:/bld/matplotlib-base_1594091905736/work
+matplotlib==3.2.2
 mecab-python3==1.0.1
-numpy @ file:///D:/bld/numpy_1591485481352/work
+numpy==1.18.5
 olefile==0.46
-Pillow @ file:///D:/bld/pillow_1594213067156/work
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1593275161868/work
+Pillow==7.2.0
+pycparser==2.20
 PyMySQL==0.9.3
 pyocr==0.5
 pyOpenSSL==19.1.0
@@ -28,8 +28,8 @@ PyQtChart==5.12
 PyQtWebEngine==5.12.1
 PySocks==1.7.1
 python-dateutil==2.8.1
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
-soupsieve @ file:///D:/bld/soupsieve_1589778617454/work
+six==1.15.0
+soupsieve==2.0.1
 tornado==6.0.4
 urllib3==1.25.9
 Werkzeug==1.0.1
