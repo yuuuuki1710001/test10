@@ -16,8 +16,7 @@ from cookme.Component6 import HistoryDisplay, HistoryRegister
 
 #MySQLに接続する
 conn = pymysql.connect(
-                    #host='172.30.27.88',
-                    user='admin',
+                    user='root',
                     passwd='10pan',
                     db='cook',
                     port=3306,

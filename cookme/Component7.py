@@ -22,7 +22,7 @@ def userInput(username, password):
     conn = pymysql.connect(
         #host        = '172.30.27.88',
         port        = 3306,
-        user        = 'admin',
+        user        = 'root',
         passwd    = '10pan',
         db          = 'cook'
     )
@@ -55,7 +55,6 @@ def userInput(username, password):
 """
 def userOutput(username, password):
     conn = pymysql.connect(
-        #host        = '172.30.27.88',
         port        = 3306,
         user        = 'admin',
         passwd    = '10pan',

@@ -66,7 +66,7 @@ def getLinks(pageURL, level, pages, pageURLs):
 
         #レシピのタイトル名を取得する
         recipeTitle = bs.find('h1').get_text()
-        recipeTitle = re.sub(r'\n|\u0020|\u3000|レシピ・作り方', '', recipeTitle)
+        recipeTitle = re.sub(r'\n|レシピ・作り方', '', recipeTitle)
         print(recipeTitle)
 
         #レシピの調理時間を取得する
