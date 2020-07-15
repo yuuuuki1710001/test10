@@ -9,6 +9,7 @@ from urllib.request import urlopen #URLを開くためのライブラリ
 from urllib.error import URLError #urllibが投げる例外ライブラリ
 from bs4 import BeautifulSoup #htmlからデータを取得するためのライブラリ
 import pymysql #MySQLのライブラリ
+import re
 
 #MySQLに接続する(おまじない)
 conn = pymysql.connect(
@@ -32,7 +33,7 @@ cur.execute('USE cook')
 
 """
 def CleanWords(OrderThing):
-    words = OrderThing.split(' ')
+    words = re.split('[ 　]', OrderThing)
     return words
 
 
