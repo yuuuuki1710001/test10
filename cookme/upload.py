@@ -30,10 +30,15 @@ def upload(userID):
         try:
             f.save(os.path.join(current_app.config['UPLOADED_PATH'], f.filename))
 
-        except FileNotFoundError:
+
+        #except FileNotFoundError:
+            #flash('アップロードするファイルを選んでください', 'message')
+            #return redirect(url_for('cookme.Home', userID=userID))
+
+        except IsADirectoryError:
             flash('アップロードするファイルを選んでください', 'message')
             return redirect(url_for('cookme.Home', userID=userID))
-            
+
         return redirect(url_for('img.SearchOrderThing', userID=userID, 
             fileName=f.filename))
 
