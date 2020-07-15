@@ -56,7 +56,7 @@ def userInput(username, password):
 def userOutput(username, password):
     conn = pymysql.connect(
         port        = 3306,
-        user        = 'admin',
+        user        = 'root',
         passwd    = '10pan',
         db          = 'cook'
     )
