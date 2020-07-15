@@ -19,28 +19,75 @@ with app.app_context():
 
     dropzone = Dropzone(current_app)
 
-@img.route('/upload/<userID>', methods=['POST'])
+@img.route('/upload/<userID>', methods=['GET', 'POST'])
 def upload(userID):
     #if request.method == 'GET':
         #return render_template('index.html')
 
-    f = request.files['file']
+    f = request.files.get('file')
+
     with app.app_context():
-        f.save(os.path.join(current_app.config['UPLOADED_PATH'], f.filename))
+        try:
+            f.save(os.path.join(current_app.config['UPLOADED_PATH'], f.filename))
+
+        except FileNotFoundError:
+            flash('アップロードするファイルを選んでください', 'message')
+            return redirect(url_for('cookme.Home', userID=userID))
+            
         return redirect(url_for('img.SearchOrderThing', userID=userID, 
             fileName=f.filename))
 
 @img.route('/SearchOrderThing/<userID>/<fileName>', methods=['GET', 'POST'])
 def SearchOrderThing(userID, fileName):
-    if '.jpg' not in fileName:
-        flash('jpgファイルをアップロードしてください', 'message')
-        return redirect(url_for('cookme.Home', userID=userID))
-        
-    search_words = ReadOrderThing(fileName)
+    
+    if '.jpg' in fileName:
+        search_words = ReadOrderThing(fileName)
 
-    #材料を読み込んだらファイルを削除
-    fileName = fileName.replace('.jpg', '')
-    os.remove('cookme/{}.jpg'.format(fileName))
+        #材料を読み込んだらファイルを削除
+        fileName = fileName.replace('.jpg', '')
+        os.remove('cookme/{}.jpg'.format(fileName))
+
+    elif '.jpeg' in fileName:
+        search_words = ReadOrderThing(fileName)
+
+        #材料を読み込んだらファイルを削除
+        fileName = fileName.replace('.jpeg', '')
+        os.remove('cookme/{}.jpeg'.format(fileName))
+
+    elif '.JPG' in fileName:
+        search_words = ReadOrderThing(fileName)
+
+        #材料を読み込んだらファイルを削除
+        fileName = fileName.replace('.JPG', '')
+        os.remove('cookme/{}.JPG'.format(fileName))
+    
+    elif '.png' in fileName:
+        search_words = ReadOrderThing(fileName)
+
+        #材料を読み込んだらファイルを削除
+        fileName = fileName.replace('.png', '')
+        os.remove('cookme/{}.png'.format(fileName))
+
+    elif '.PNG' in fileName:
+        search_words = ReadOrderThing(fileName)
+
+        #材料を読み込んだらファイルを削除
+        fileName = fileName.replace('.PNG', '')
+        os.remove('cookme/{}.PNG'.format(fileName))
+
+    elif '.HEIC' in fileName:
+        search_words = ReadOrderThing(fileName)
+
+        #材料を読み込んだらファイルを削除
+        fileName = fileName.replace('.HEIC', '')
+        os.remove('cookme/{}.HEIC'.format(fileName))
+
+    else:
+        flash('拡張子が違います', 'message')
+        return redirect(url_for('cookme.Home', userID=userID))
+
+
+    #ファイルを削除
     os.remove('cookme/{}_drawcont.jpg'.format(fileName))
     os.remove('cookme/{}_gray.jpg'.format(fileName))
     os.remove('cookme/{}_rect_th.jpg'.format(fileName))
