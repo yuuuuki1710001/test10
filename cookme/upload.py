@@ -32,6 +32,10 @@ def upload(userID):
 
 @img.route('/SearchOrderThing/<userID>/<fileName>', methods=['GET', 'POST'])
 def SearchOrderThing(userID, fileName):
+    if '.jpg' not in fileName:
+        flash('jpgファイルをアップロードしてください', 'message')
+        return redirect(url_for('cookme.Home', userID=userID))
+        
     search_words = ReadOrderThing(fileName)
 
     #材料を読み込んだらファイルを削除
