@@ -9,7 +9,6 @@ from urllib.request import urlopen #URLを開くためのライブラリ
 from urllib.error import URLError #urllibが投げる例外ライブラリ
 from bs4 import BeautifulSoup #htmlからデータを取得するためのライブラリ
 import pymysql #MySQLのライブラリ
-import MeCab #形態素解析ライブラリ
 
 #MySQLに接続する(おまじない)
 conn = pymysql.connect(
@@ -33,17 +32,7 @@ cur.execute('USE cook')
 
 """
 def CleanWords(OrderThing):
-    m = MeCab.Tagger()
-    m.parse(OrderThing)
-    node = m.parseToNode(OrderThing) #単語と品詞の両方を解析する
-    words = []
-    hinshi = ['動詞', '名詞', '形容詞']
-    while node:
-        word = node.surface #単語
-        pos = node.feature.split(',')[0] #品詞
-        if pos in hinshi:
-            words.append(word)
-        node = node.next
+    words = OrderThing.split(' ')
     return words
 
 
