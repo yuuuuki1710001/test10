@@ -1,0 +1,69 @@
+高度情報演習1B　メモ
+
+●MySQLの外部接続方法
+1.コマンドプロンプトやAnaconda Promptを開いて, mysql -h (SRAS VPNのIPアドレス) -u admin -pを入力
+2.パスワード 10panを入力
+
+※SRAS VPNのIPアドレスは接続する度に毎回変わるため，基本的にシステムテストをするときと発表のときのみ野田のMySQLに接続するようにお願いします。
+ただし、どうしても外部接続してほしい場合は野田に連絡お願いします
+(バイト等で外出している場合あり)
+
+
+●各々のMySQLにデータベースと以下のテーブルを作成してもらう
+1.MySQL 8.0 Command Line Clientを開いてパスワードを入力
+
+2.データベースを作成
+mysql> create table (任意のデータベース名);
+例:mysql> create table noda;→nodaというデータベースが作成された
+
+3.以下のテーブルを作成する
+  3.1.利用者情報
+  mysql> create table user (
+      -> `UserID` varchar(255),
+      -> `Pass` varchar(511), ←変更点
+      -> primary key(`UserID`));　
+
+  3.2.利用者の履歴情報(変更点:primary keyはなし)
+  mysql> create table history (
+      -> `UserID` varchar(255),
+      -> `recipeURL` varchar(511),
+      -> `recipeTitle` varchar(255));
+　
+
+  3.3.利用者のお気に入り情報(変更点:primary keyはなし)
+  mysql> create table favorite (
+      -> `UserID` varchar(255),      
+      -> `recipeURL` varchar(511),
+      -> `recipeTitle` varchar(255));　
+
+  3.4.レシピの在庫情報
+  mysql> create table cookpages (
+      -> `recipeURL` varchar(511),
+      -> `recipeTitle` varchar(255),
+      -> `recipeTime` int,
+      -> `OrderThing` varchar(255), ←変更点
+      -> `OrderThing2` varchar(255),←変更点
+      -> `OrderThing3` varchar(255),←変更点
+      -> primary key(`recipeURL`));　
+
+  上記4つのコマンドを入力する
+
+  
+●野田が作ったpythonファイルを、GitHubを通じてリモートリポジトリに送ります。コードの書き方を参考にした上で、内部設計書通りに書き直してください。
+
+●cookpad.py、kurashiru.py、DelishKitchen.py、chefgohan.pyをそれぞれ実行してもらい、3.4.レシピの在庫情報というテーブルに数十個のレシピ情報を格納してください。(各々がコーディングするときに使う。最終的にシステムテストや発表をするときに、野田が作成したレシピの在庫情報を使う)
+
+
+※GitHubでpythonファイルを送る場合、現状、pymysql.connectにユーザ名とパスワードが直接見える状態です。暗号化する方法が分からなかったので、分かる人がいたら野田に教えてください。もしそれが解決できない場合のために、一応予備のデータベースを作成しました。
+
+tesseract 
+参考:https://qiita.com/tifa2chan/items/d2ae546804b1ce2e7277
+
+
+
+
+
+
+
+
+
