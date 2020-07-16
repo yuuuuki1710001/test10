@@ -14,7 +14,11 @@
   -->
 </head>
 <body>
+<center>
 <div class="bg-mask">
+  <h1>
+    <center>CookME</center>
+  </h1>
   {{ dropzone.create(action='img.upload') }}
   {{ dropzone.load_js() }}
   {{ dropzone.config() }}
@@ -22,7 +26,8 @@
     <input type="file" name="file">
     <input type="submit" value="submit">
   </form>
-
+<br>
 </div>
+</center>
 </body>
 </html>
