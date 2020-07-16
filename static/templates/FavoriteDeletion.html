@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>CookME</title>
+    <link rel = "stylesheet" href = "../static/FavoriteDeletion.css">
+</head>
+<body>
+<div class="bg-mask">
+<center>
+        <h1>
+            <center>CookME</center>
+        </h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <form method="POST">
+        <button class="button" type="button" onclick="history.go(-2)">戻る</button><br><br>
+    </form>
+</center>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CookME</title>
+    <link rel = "stylesheet" href = "..\static\Home.css">
+</head>
+
+<body class="animation">
+<div class="bg-mask">
+    <center>
+    <h1>CookME</h1>
+        {% if userID %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class=flashes>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
+                <div>
+                    <p>材料名と調理時間を入力してください(調理時間のは半角の整数値で入力してください。そうしないとレシピの候補が出ません。)</p><br>
+                    <input type="text" name="OrderThing" placeholder="材料名">
+                </div>
+                <div>
+                    <input type="text" name="recipeTime" placeholder="調理時間">
+                </div><br>
+                <button class="button" type="submit" name="userID" value="{{ userID }}">検索</button>
+            </form>
+
+            <form action="{{ url_for('img.upload', userID=userID) }}" method="POST" enctype="multipart/form-data">
+                <p>レシート画像をアップロードできます(jpg, jpeg, JPG, png, PNG)</p><br>
+                <input type="file" name="file">
+                <input type="submit" value="submit">
+            </form>
+
+            <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST"><br>
+                <button class="button" type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button><br>
+            </form>
+
+            <form action="{{ url_for('cookme.History', userID=userID) }}" method="POST">
+                <button class="button" type="submit" name="userID" value="{{ userID }}">履歴</button><br><br>
+            </form>
+
+            <form action="{{ url_for('user.logout') }}" method="GET">
+                <button class="button" type="submit">logout</button>
+            </form>
+        {% endif %}
+    <br><br>
+    </center>
+</div>
+</body>
+</html>
