@@ -80,13 +80,6 @@ def SearchOrderThing(userID, fileName):
         fileName = fileName.replace('.PNG', '')
         os.remove('cookme/{}.PNG'.format(fileName))
 
-    elif '.HEIC' in fileName:
-        search_words = ReadOrderThing(fileName)
-
-        #材料を読み込んだらファイルを削除
-        fileName = fileName.replace('.HEIC', '')
-        os.remove('cookme/{}.HEIC'.format(fileName))
-
     else:
         flash('拡張子が違います', 'message')
         return redirect(url_for('cookme.Home', userID=userID))
