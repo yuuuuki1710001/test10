@@ -18,7 +18,7 @@
                 {% if recipeTitles == [] %}
                     <p>該当レシピなし</p><br>
                 {% else %}
-                    {% for recipeTitle in recipeTitles %} 
+                    {% for recipeTitle in recipeTitles %}
                         <p1>
                             <input type="submit" name="recipeTitle" value="{{ recipeTitle }}">
                             <button class="button" type="submit" name="submit_button" value="{{ recipeTitle }}">削除</button>

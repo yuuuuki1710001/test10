@@ -6,6 +6,15 @@ html {
     font-family: 'Noto Sans JP', sans-serif;
 }
 
+ul {
+    list-style: none;
+}
+
+li {
+    color: #da1717;
+}
+
+
 h1 {
     font-size: 300%;
     font-family: 'Ubuntu Mono', monospace;
