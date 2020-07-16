@@ -1,6 +1,6 @@
 """
     C2      :   認証処理部
-    Data    :   2020/07/06
+    Data    :   2020/07/16
     Purpose :   ログイン処理、新規登録処理、ログアウト処理
 """
 
@@ -45,7 +45,6 @@ def login():
         error_message = 'パスワードの入力は必須です'
     elif db == 1:
         error_message = 'ユーザー名もしくはパスワードが正しくありません'
-        print(error_message)
 
     if error_message is not None:
         # エラーがあればそれを表示したうえでログイン画面に遷移
@@ -59,10 +58,9 @@ def login():
     return redirect(url_for('cookme.Home', userID=UserID))
 
 
-
 """
     FunctionName    :   createUser
-    Data            :   2020/07/04
+    Data            :   2020/07/16
     Designer        :   前原達也
     Function        :   利用者の新規登録処理
     Entry           :   利用者ID、パスワード
@@ -93,6 +91,14 @@ def createUser():
         error_message = 'パスワードの入力は必須です'
     elif db == 1:
         error_message = 'ユーザー名 {} はすでに使用されています'.format(UserID)
+    elif db == 2:
+        error_message = 'ユーザー名は英数字とアンダーバーのみ使用できます'
+    elif db == 3:
+        error_message = 'パスワードには英数字を1字以上含めてください'
+    elif db == 4:
+        error_message = 'パスワードが短いです'
+    elif db == 5:
+        error_message = 'パスワードが長いです'
 
     # エラーがあれば、それを画面に表示させる
     if error_message is not None:
@@ -119,34 +125,3 @@ def logout():
     session.clear()
     flash('ログアウトしました', category = 'alert alert-info')
     return redirect(url_for('user.login'))
-
-
-
-# @bp.before_app_request
-# @app.before_request
-# def load_logged_in_user():
-#     # どのURLが要求されても、ビュー関数の前で実行される関数
-#     # ログインしているか確認し、ログインされていればユーザー情報を取得する
-
-#     UserID = session.get('UserID')
-
-#     if UserID is None:
-#         g.user = None
-#     else:
-#         db = 
-
-# def login_required(view):
-#     # ユーザーがログインされているかどうかをチェックし、
-#     # そうでなければログインページにリダイレクト
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user is None:
-#             flash('ログインをしてから操作してください', category='alert alert-warning')
-#             return redirect(url_for('auth.login'))
-
-#         return view(**kwargs)
-
-#     return wrapped_view
-
-#if __name__ == "__main__":
-    #app.run(debug = True)
