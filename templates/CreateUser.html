@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <html lang = 'ja'>
-    <head>
-        <meta charset = "UTF-8">
-        <title>CookME</title>
-        <link rel = "stylesheet" href = "../static/CreateUser.css">
-    </head>
+<html lang='ja'>
 
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>CookME</title>
+    <link rel="stylesheet" href="../static/CreateUser.css">
+</head>
+
+
+<body>
     <div class="bg-mask">
         <h1>
             <center>CookME</center>
         </h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class=flashes>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% endwith %}
 
-        <form action = "{{url_for('user.createUser')}}" method = "POST">
+        <form action="{{url_for('user.createUser')}}" method="POST">
             <center>
                 <!-- ようこそ、CookMeへ<br><br> -->
                 <p>新規登録</p><br>
                 <ul>
-                    <li class = "name">
-                        <label for = "name">ID</label>
-                        <input type = "UserID" name = "UserID", placeholder = "ユーザID">
+                    <li class="name">
+                        <label for="name">ID</label>
+                        <input type="UserID" name="UserID" , placeholder="英数字 or '_'のみ">
                     </li>
-                    <li class = "pass">
-                        <label for = "pass">PASS</label>
-                        <input type = "password" name = "password", placeholder = "英字数字を含む8~16字">
+                    <li class="pass">
+                        <label for="pass">PASS</label>
+                        <input type="password" name="password" , placeholder="英数字を含む8~16字">
                     </li>
                 </ul>
 
                 <br>
-                <button class="button" type="submit" onclick = "location.href = 'login.html'">登録</button>
+                <button class="button" type="submit" onclick="location.href = 'login.html'">登録</button>
                 <button class="button" type="button" onclick="history.back()">戻る</button><br><br>
             </center>
         </form>
-    <div>
-    </body>
+        <div>
+</body>
+
 </html>
