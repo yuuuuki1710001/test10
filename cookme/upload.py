@@ -44,6 +44,14 @@ def upload(userID):
 
 @img.route('/SearchOrderThing/<userID>/<fileName>', methods=['GET', 'POST'])
 def SearchOrderThing(userID, fileName):
+
+    if fileName.count(' ') >= 1:
+        flash('ファイル名に空白スペースがあります', 'message')
+        return redirect(url_for('cookme.Home', userID=userID))
+
+    if fileName.count('.') >= 2:
+        flash('ファイル名にドット(.)が2つ以上あります', 'message')
+        return redirect(url_for('cookme.Home', userID=userID))
     
     if '.jpg' in fileName:
         search_words = ReadOrderThing(fileName)
@@ -86,10 +94,18 @@ def SearchOrderThing(userID, fileName):
 
 
     #ファイルを削除
-    os.remove('cookme/{}_drawcont.jpg'.format(fileName))
-    os.remove('cookme/{}_gray.jpg'.format(fileName))
-    os.remove('cookme/{}_rect_th.jpg'.format(fileName))
-    os.remove('cookme/{}_th.jpg'.format(fileName))
+    if os.path.exists('cookme/{}_drawcont.jpg'.format(fileName)) == True:
+        os.remove('cookme/{}_drawcont.jpg'.format(fileName))
+    
+    if os.path.exists('cookme/{}_gray.jpg'.format(fileName)) == True:
+        os.remove('cookme/{}_gray.jpg'.format(fileName))
+
+    if os.path.exists('cookme/{}_rect_th.jpg'.format(fileName)) == True:
+        os.remove('cookme/{}_rect_th.jpg'.format(fileName))
+
+    if os.path.exists('cookme/{}_th.jpg'.format(fileName)) == True:
+        os.remove('cookme/{}_th.jpg'.format(fileName))
+
     
 
     return render_template('SearchOrderThing.html', userID=userID,
