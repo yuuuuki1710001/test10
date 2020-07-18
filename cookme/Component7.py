@@ -27,9 +27,9 @@ def userInput(username, password):
     if re.search('[a-zA-Z0-9]', password) == None:
         return 3
     # パスワードの長さ制限
-    if password.length() < 8:
+    if len(password) < 8:
         return 4
-    if password.length() > 16:
+    if len(password) > 16:
         return 5
 
     # パスワードをハッシュ化
