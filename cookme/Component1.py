@@ -64,7 +64,7 @@ def SearchResult(userID):
     #材料名も調理時間も入力されていないとき
     if not OrderThing and not recipeTime:
         session.clear()
-        flash('材料名か調理時間を入力してください', 'message')
+        flash('材料名か調理時間を入力してください', 'failed')
         return redirect(url_for('cookme.Home', userID=userID))
 
     #材料名が入力されていないとき
