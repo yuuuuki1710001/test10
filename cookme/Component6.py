@@ -22,6 +22,7 @@ Return : なし
 def HistoryRegister(UserID,recipeURL,recipeTitle):
     cur.execute('INSERT INTO history (UserID,recipeURL,recipeTitle) VALUES (%s,%s,%s)',(UserID, recipeURL, recipeTitle))
     conn.commit()
+    
 
 """
 FunctionName : HistoryDisplay

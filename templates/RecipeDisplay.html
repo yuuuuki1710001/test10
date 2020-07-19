@@ -23,8 +23,11 @@
             <br>
             <h3>作り方</h3>
             <p>{{ recipeToCook }}</p><br>
-            <button class="button" type="submit" name="recipeTitle" value="{{ recipeTitle }}">お気に入り登録</button>
+            <button class="button" type="submit" name="recipeTitle" value="{{ recipeTitle }}">お気に入り登録</button><br><br>
             <button class="button" type="button" onclick="history.back()">戻る</button><br><br>
+        </form>
+        <form action="{{ url_for('cookme.Home', userID=userID) }}" method="POST">
+            <button class="button" type="submit">Home</button><br><br>
         </form>
     {% endif %}
 </center>

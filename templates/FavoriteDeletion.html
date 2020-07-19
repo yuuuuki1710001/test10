@@ -22,8 +22,11 @@
     {% endwith %}
 
 
-    <form method="POST">
-        <button class="button" type="button" onclick="history.go(-2)">戻る</button><br><br>
+    <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST">
+        <button class="button" type="submit">戻る</button><br>
+    </form>
+    <form action="{{ url_for('cookme.Home', userID=userID) }}" method="POST">
+        <button class="button" type="submit">Home</button><br>
     </form>
 </center>
 </div>
