@@ -6,6 +6,10 @@ html {
     font-family: 'Noto Sans JP', sans-serif;
 }
 
+.failed {
+    color: #da1717;
+}
+
 .animation {
     animation-name: fadein;
     animation-duration: 3s;

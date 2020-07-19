@@ -32,11 +32,11 @@ def upload(userID):
 
 
         #except FileNotFoundError:
-            #flash('アップロードするファイルを選んでください', 'message')
+            #flash('アップロードするファイルを選んでください', 'failed')
             #return redirect(url_for('cookme.Home', userID=userID))
 
         except IsADirectoryError:
-            flash('アップロードするファイルを選んでください', 'message')
+            flash('アップロードするファイルを選んでください', 'failed')
             return redirect(url_for('cookme.Home', userID=userID))
 
         return redirect(url_for('img.SearchOrderThing', userID=userID, 
