@@ -25,8 +25,8 @@
         {% endif %}
         {% endwith %}
 
-        <form action="{{url_for('user.createUser')}}" method="POST">
-            <center>
+        <center>
+            <form action="{{url_for('user.createUser')}}" method="POST">
                 <!-- ようこそ、CookMeへ<br><br> -->
                 <p>新規登録</p><br>
                 <ul>
@@ -42,9 +42,12 @@
 
                 <br>
                 <button class="button" type="submit" onclick="location.href = 'login.html'">登録</button>
-                <button class="button" type="button" onclick="history.back()">戻る</button><br><br>
-            </center>
-        </form>
+            </form>
+
+            <form action="{{ url_for('user.login') }}" method="GET">
+                <button class="button" type="submit">戻る</button><br><br>
+            </form>
+        </center>
         <div>
 </body>
 
