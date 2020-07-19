@@ -17,9 +17,9 @@
                 <button class="button" type="button" onclick="history.back()">戻る</button><br>
                 <p>読み込むことができた材料名です</p><br>
                 {% if OrderThings == [] %}
-                    <p>材料を読み込むことができませんでした</p><br>
+                    <p2>材料を読み込むことができませんでした</p2><br>
                 {% else %}
-                    {% for OrderThing in OrderThings %} 
+                    {% for OrderThing in OrderThings %}
                         <p1>
                             <input type="submit" name="OrderThing" value="{{ OrderThing }}"><br>
                         </p1>

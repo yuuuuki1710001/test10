@@ -20,9 +20,9 @@
                 <!--<button class="button" type="button" onclick="history.back()">戻る</button><br>-->
                 <p>検索された条件のレシピ一覧です</p><br>
                 {% if recipeTitles == [] %}
-                    <br><p>該当レシピなし</p><br>
+                    <br><p2>該当レシピなし</p2><br>
                 {% else %}
-                    {% for recipeTitle in recipeTitles %} 
+                    {% for recipeTitle in recipeTitles %}
                         <p1>
                             <input type="submit" name="recipeTitle" value="{{ recipeTitle }}">
                         </p1>

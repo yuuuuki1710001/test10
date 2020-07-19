@@ -24,7 +24,8 @@
 
             <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
                 <div>
-                    <p>材料名と調理時間を入力してください(調理時間のは半角の整数値で入力してください。そうしないとレシピの候補が出ません。)</p><br>
+                    <p>材料名と調理時間を入力してください</p><br>
+                    <p2>(調理時間は半角の整数値で入力してください)</p2><br><br>
                     <input type="text" name="OrderThing" placeholder="材料名">
                 </div>
                 <div>
@@ -40,7 +41,7 @@
             </form>
 
             <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST"><br>
-                <button class="button" type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button><br>
+                <button class="button" type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button><br><br>
             </form>
 
             <form action="{{ url_for('cookme.History', userID=userID) }}" method="POST">

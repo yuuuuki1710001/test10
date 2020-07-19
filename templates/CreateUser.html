@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html>
-<html lang='ja'>
+<html lang = 'ja'>
+    <head>
+        <meta charset = "UTF-8">
+        <title>CookME</title>
+        <link rel = "stylesheet" href = "../static/CreateUser.css">
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <title>CookME</title>
-    <link rel="stylesheet" href="../static/CreateUser.css">
-</head>
-
-
-<body>
+    <body>
     <div class="bg-mask">
         <h1>
             <center>CookME</center>
         </h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul class=flashes>
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
         {% endwith %}
 
         <center>
@@ -39,7 +36,7 @@
                         <input type="password" name="password" , placeholder="英数字を含む8~16字">
                     </li>
                 </ul>
-
+                
                 <br>
                 <button class="button" type="submit" onclick="location.href = 'login.html'">登録</button>
             </form>
@@ -48,7 +45,6 @@
                 <button class="button" type="submit">戻る</button><br><br>
             </form>
         </center>
-        <div>
-</body>
-
+    </div>
+    </body>
 </html>
