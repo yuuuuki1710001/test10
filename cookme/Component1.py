@@ -61,7 +61,6 @@ def SearchResult(userID):
     OrderThing = request.form['OrderThing']           #材料名
     recipeTime = request.form['recipeTime']           #調理時間
 
-
     #材料名も調理時間も入力されていないとき
     if not OrderThing and not recipeTime:
         session.clear()
