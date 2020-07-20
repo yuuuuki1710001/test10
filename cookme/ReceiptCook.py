@@ -26,20 +26,20 @@ def ReadOrderThing(pic_name):
     receipt_data = data2.split()
     print("read data txt is \n ",receipt_data)
     # レシートから読み込んだ文字列を表示
-    search_words = []
+    SearchWords = []
 
     # 食材リストと照らし合わせてリストに照合するものがレシートのデータに存在すれば
     # その3つの食材をsearch_wordsに加える
     for word in lines:
         for receipt in receipt_data:
             if word in receipt:
-                search_words.append(word)
+                SearchWords.append(word)
                 print("True")
 
-    print(search_words)
-    search_words.sort(key=len, reverse=True)
-    search_words = search_words[:3]
-    print(search_words,"\n")
-    return search_words
+    print(SearchWords)
+    SearchWords.sort(key=len, reverse=True)
+    SearchWords = SearchWords[:3]
+    print(SearchWords,"\n")
+    return SearchWords
 
 #ReadOrderThing(pic_name)

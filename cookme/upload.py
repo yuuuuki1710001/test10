@@ -54,35 +54,35 @@ def SearchOrderThing(userID, fileName):
         return redirect(url_for('cookme.Home', userID=userID))
     
     if '.jpg' in fileName:
-        search_words = ReadOrderThing(fileName)
+        SearchWords = ReadOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.jpg', '')
         os.remove('cookme/{}.jpg'.format(fileName))
 
     elif '.jpeg' in fileName:
-        search_words = ReadOrderThing(fileName)
+        SearchWords = ReadOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.jpeg', '')
         os.remove('cookme/{}.jpeg'.format(fileName))
 
     elif '.JPG' in fileName:
-        search_words = ReadOrderThing(fileName)
+        SearchWords = ReadOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.JPG', '')
         os.remove('cookme/{}.JPG'.format(fileName))
     
     elif '.png' in fileName:
-        search_words = ReadOrderThing(fileName)
+        SearchWords = ReadOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.png', '')
         os.remove('cookme/{}.png'.format(fileName))
 
     elif '.PNG' in fileName:
-        search_words = ReadOrderThing(fileName)
+        SearchWords = ReadOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.PNG', '')
@@ -109,7 +109,7 @@ def SearchOrderThing(userID, fileName):
     
 
     return render_template('SearchOrderThing.html', userID=userID,
-        OrderThings=search_words)
+        OrderThings=SearchWords)
 
 
 
