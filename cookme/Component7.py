@@ -10,14 +10,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 """
     FunctionName    :   userInput
-    Data            :   2020/07/16
+    Data            :   2020/07/21
     Designer        :   前原達也
     Function        :   新規登録のためのデータベース操作
-    Return          :   0...入力内容とデータベース内の情報が一致
-                        1...入力内容とデータベース内の情報が不一致
-                        2...パスワードの長さ制限外(minimum)
-                        3...パスワードの長さ制限外(maximum)
-                        4...利用者名に英数字と"_"以外が含まれた時
+    Entry           :   userID      --- 利用者ID
+                        password    --- パスワード
+    Return          :   0           --- 入力内容とデータベース内の情報が一致(正常処理)
+                        1           --- 入力内容とデータベース内の情報が不一致(異常処理)
+                        2           --- パスワードの長さ制限外(minimum)(異常処理)
+                        3           --- パスワードの長さ制限外(maximum)(異常処理)
+                        4           --- 利用者名に英数字と"_"以外が含まれた時(異常処理)
 """
 def userInput(username, password):
     # 利用者名は英数字と"_"のみ
@@ -33,21 +35,22 @@ def userInput(username, password):
         return 5
 
     # パスワードをハッシュ化
-    Pass = generate_password_hash(password)
+    passWord = generate_password_hash(password)
     
+    # MySQL接続
     conn = pymysql.connect(
-        #host        = '172.30.27.88',
-        port        = 3306,
-        user        = 'root',
-        passwd      = '10pan',
-        db          = 'cook'
+        user    =   'root',
+        passwd  =   '10pan',
+        db      =   'cook',
+        port    =   3306,
+        charset =   'utf8'
     )
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
     cur.execute('USE cook')
 
-    cur.execute('CREATE TABLE IF NOT EXISTS user(UserID VARCHAR(256), Pass VARCHAR(512), PRIMARY KEY(UserID))')
+    cur.execute('CREATE TABLE IF NOT EXISTS user(UserID VARCHAR(256), pass VARCHAR(512), PRIMARY KEY(UserID))')
     cur.execute('SELECT UserID FROM user WHERE UserID = %s', (username))
 
     if cur.rowcount == 1:
@@ -55,7 +58,7 @@ def userInput(username, password):
         conn.close()
         return 1
     elif (cur.rowcount == 0):
-        cur.execute('INSERT INTO user(UserID, Pass) VALUES(%s, %s);', (username, Pass))
+        cur.execute('INSERT INTO user(userID, pass) VALUES(%s, %s);', (username, passWord))
         conn.commit()
         cur.close()
         conn.close()
@@ -64,25 +67,28 @@ def userInput(username, password):
 
 """
     FunctionName    :   userOutput
-    Data            :   2020/07/06
+    Data            :   2020/07/21
     Designer        :   前原達也
     Function        :   ログインのためのデータベース操作
-    Return          :   0...入力内容とデータベース内の情報が一致
-                        1...入力内容とデータベース内の情報が不一致
+    Entry           :   userID      --- 利用者ID
+                        password    --- パスワード
+    Return          :   0           --- 入力内容とデータベース内の情報が一致(正常格納)
+                        1           --- 入力内容とデータベース内の情報が不一致(格納不可)
 """
 def userOutput(username, password):
     conn = pymysql.connect(
-        port        = 3306,
-        user        = 'root',
-        passwd      = '10pan',
-        db          = 'cook'
+        user    =   'root',
+        passwd  =   '10pan',
+        db      =   'cook',
+        port    =   3306,
+        charset =   'utf8'
     )
     conn.ping(reconnect = True)
 
     cur = conn.cursor()
     cur.execute('USE cook')
 
-    cur.execute('SELECT Pass FROM user WHERE UserID = %s;', (username))
+    cur.execute('SELECT pass FROM user WHERE UserID = %s;', (username))
 
     if cur.rowcount == 0:
         cur.close()

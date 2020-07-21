@@ -7,21 +7,22 @@
 import functools
 import os
 from flask import Flask, Blueprint, flash, g, redirect, render_template, request, session, url_for
-from cookme.Component1 import Home
+from cookme.Component1 import home
 from cookme.Component7 import userInput, userOutput
 
 user = Blueprint('user', __name__)
 
 """
     FunctionName    :   login
-    Data            :   2020/07/06
+    Data            :   2020/07/21
     Designer        :   前原達也
     Function        :   利用者のログイン処理
-    Entry           :   利用者ID、パスワード
+    Entry           :   userID      --- 利用者ID
+                        passWord    --- パスワード
+                        ※ 上記の入力はhtmlの入力フォームからの入力
     Return          :   セッションを保存し、利用者のホーム画面に遷移
 """
 @user.route('/', methods=('GET', 'POST'))
-#@app.route('/', methods=('GET', 'POST'))
 def login():
     # GET ：ログイン画面に遷移
     # POST：ログイン処理を実施
@@ -31,17 +32,17 @@ def login():
         return render_template('login.html')
 
     # ログインフォームから送られてきた、ユーザー名とパスワードを取得
-    UserID = request.form['UserID']
-    Pass = request.form['password']
+    userID = request.form['userID']
+    passWord = request.form['password']
 
     # DBと接続
-    db = userOutput(UserID, Pass)
+    db = userOutput(userID, passWord)
 
     # ユーザー名とパスワードのチェック
     error_message = None
-    if not UserID:
+    if not userID:
         error_message = 'ユーザー名の入力は必須です'
-    elif not Pass:
+    elif not passWord:
         error_message = 'パスワードの入力は必須です'
     elif db == 1:
         error_message = 'ユーザー名もしくはパスワードが正しくありません'
@@ -53,21 +54,22 @@ def login():
 
     # エラーがなければ、セッションにユーザーIDを追加してインデックスページへ遷移
     session.clear()
-    session['username'] = UserID
-    flash('{}さんとしてログインしました'.format(UserID), 'message')
-    return redirect(url_for('cookme.Home', userID=UserID))
+    session['username'] = userID
+    flash('{}さんとしてログインしました'.format(userID), 'message')
+    return redirect(url_for('cookme.home', userID=userID))
 
 
 """
     FunctionName    :   createUser
-    Data            :   2020/07/16
+    Data            :   2020/07/21
     Designer        :   前原達也
     Function        :   利用者の新規登録処理
-    Entry           :   利用者ID、パスワード
+    Entry           :   userID      --- 利用者ID
+                        passWord    --- パスワード
+                        ※ 上記の入力はhtmlの入力フォームからの入力
     Return          :   データベースに利用者情報を格納し、ログイン画面に遷移
 """
 @user.route('/create_user', methods=('GET', 'POST'))
-#@app.route('/create_user', methods = ('GET', 'POST'))
 def createUser():
     # GET ：ユーザー登録画面に遷移
     # POST：ユーザー登録処理を実施
@@ -77,20 +79,20 @@ def createUser():
         return render_template('CreateUser.html')
 
     # 登録フォームから送られてきた、ユーザー名とパスワードを取得
-    UserID = request.form['UserID']
-    Pass = request.form['password']
+    userID = request.form['userID']
+    passWord = request.form['password']
 
     # DBと接続
-    db = userInput(UserID, Pass)
+    db = userInput(userID, passWord)
 
     # エラーチェック
     error_message = None
-    if not UserID:
+    if not userID:
         error_message = 'ユーザー名の入力は必須です'
-    elif not Pass:
+    elif not passWord:
         error_message = 'パスワードの入力は必須です'
     elif db == 1:
-        error_message = 'ユーザー名 {} はすでに使用されています'.format(UserID)
+        error_message = 'ユーザー名 {} はすでに使用されています'.format(userID)
     elif db == 2:
         error_message = 'ユーザー名は英数字とアンダーバーのみ使用できます'
     elif db == 3:
@@ -119,7 +121,6 @@ def createUser():
     Return          :   セッションを破棄し、ログイン画面に遷移
 """
 @user.route('/logout')
-#@app.route('/logout')
 def logout():
     # ログアウトする
     session.clear()
