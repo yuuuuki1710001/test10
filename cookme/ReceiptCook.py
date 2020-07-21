@@ -9,37 +9,47 @@ import pyocr.builders
 from cookme import ReceiptRead
 #pic_name = sys.argv[1]
 
-def ReadOrderThing(pic_name):   
-    ReceiptRead.convert(pic_name, CUT=True)
+
+
+"""
+    FunctionName    :   readOrderThing
+    Data            :   2020/07/21
+    Designer        :   鳥居昭吾
+    Function        :   レシート画像から読み込まれた材料を取得する
+    Entry           :   picName     --- レシート画像のファイル名
+    Return          :   searchWords --- レシート画像から読み込まれた材料(list型)
+"""
+def readOrderThing(picName):   
+    ReceiptRead.convert(picName, CUT=True)
     # レシートデータから文字データを抽出する。出力ファイルは`output.txt`
 
     # あらかじめ作っておいたfood_list.txtを呼び出す。(絶対パス)
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    foodListFileName = os.path.join(basedir, 'food_list.txt')
+    baseDir = os.path.abspath(os.path.dirname(__file__))
+    foodListFileName = os.path.join(baseDir, 'foodList.txt')
     f = open(foodListFileName, 'r', encoding="utf-8")
     data1 = f.read()
     f.close()
     lines = data1.split('\n')
-    filename = "output.txt"
-    f = open(filename,encoding="utf-8")
+    fileName = "output.txt"
+    f = open(fileName,encoding="utf-8")
     data2 = f.read()
-    receipt_data = data2.split()
-    print("read data txt is \n ",receipt_data)
+    receiptData = data2.split()
+    print("read data txt is \n ",receiptData)
     # レシートから読み込んだ文字列を表示
-    SearchWords = []
+    searchWords = []
 
     # 食材リストと照らし合わせてリストに照合するものがレシートのデータに存在すれば
     # その3つの食材をsearch_wordsに加える
     for word in lines:
-        for receipt in receipt_data:
+        for receipt in receiptData:
             if word in receipt:
-                SearchWords.append(word)
+                searchWords.append(word)
                 print("True")
 
-    print(SearchWords)
-    SearchWords.sort(key=len, reverse=True)
-    SearchWords = SearchWords[:3]
-    print(SearchWords,"\n")
-    return SearchWords
+    print(searchWords)
+    searchWords.sort(key=len, reverse=True)
+    searchWords = searchWords[:3]
+    print(searchWords,"\n")
+    return searchWords
 
-#ReadOrderThing(pic_name)
+

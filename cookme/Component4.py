@@ -47,7 +47,7 @@ def selectURL(recipeTitle):
                         recipiToCook    --- 検索したレシピの作り方
 
 """
-def recipeDisplay(recipeTitle):
+def RecipeDisplay(recipeTitle):
     recipeURL = selectURL(recipeTitle)
     print(recipeURL)
 

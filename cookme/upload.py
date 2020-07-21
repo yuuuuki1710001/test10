@@ -1,7 +1,15 @@
+"""
+    upload  :   レシート画像をアップロードする
+    Date    :   2020/07/21
+    purpose :   レシート画像をアップロードする
+"""
+
+
+
 import os
 from flask import *
 from flask_dropzone import Dropzone
-from cookme.ReceiptCook import ReadOrderThing
+from cookme.ReceiptCook import readOrderThing
 
 img = Blueprint('img', __name__)
 basedir = os.path.abspath(os.path.dirname(__file__)) #ディレクトリ名を取得
@@ -19,6 +27,19 @@ with app.app_context():
 
     dropzone = Dropzone(current_app)
 
+
+
+
+"""
+    FunctionName    :   upload
+    Data            :   2020/07/21
+    Designer        :   野田啓介
+    Function        :   レシート画像をアップロードする
+    Entry           :   userID   --- ユーザー名
+    Return          :   SearchOrderThingメソッドにリダイレクトする
+                        userID   --- ユーザー名
+                        fileName --- レシート画像のファイル名
+"""
 @img.route('/upload/<userID>', methods=['GET', 'POST'])
 def upload(userID):
     #if request.method == 'GET':
@@ -39,11 +60,24 @@ def upload(userID):
             flash('アップロードするファイルを選んでください', 'failed')
             return redirect(url_for('cookme.Home', userID=userID))
 
-        return redirect(url_for('img.SearchOrderThing', userID=userID, 
+        return redirect(url_for('img.searchOrderThing', userID=userID, 
             fileName=f.filename))
 
+
+
+"""
+    FunctionName    :   SearchOrderThing
+    Data            :   2020/07/21
+    Designer        :   野田啓介
+    Function        :   ホーム画面表示
+    Entry           :   userID      --- ユーザー名
+                        fileName    --- レシート画像のファイル名
+    Return          :   ホーム画面に遷移
+                        userID      --- ユーザー名
+                        searchWords --- レシート画像から読み込まれた材料(list型)
+"""
 @img.route('/SearchOrderThing/<userID>/<fileName>', methods=['GET', 'POST'])
-def SearchOrderThing(userID, fileName):
+def searchOrderThing(userID, fileName):
 
     if fileName.count(' ') >= 1:
         flash('ファイル名に空白スペースがあります', 'message')
@@ -54,46 +88,47 @@ def SearchOrderThing(userID, fileName):
         return redirect(url_for('cookme.Home', userID=userID))
     
     if '.jpg' in fileName:
-        SearchWords = ReadOrderThing(fileName)
+        searchWords = readOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.jpg', '')
         os.remove('cookme/{}.jpg'.format(fileName))
 
     elif '.jpeg' in fileName:
-        SearchWords = ReadOrderThing(fileName)
+        searchWords = readOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.jpeg', '')
         os.remove('cookme/{}.jpeg'.format(fileName))
 
     elif '.JPG' in fileName:
-        SearchWords = ReadOrderThing(fileName)
+        searchWords = readOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.JPG', '')
         os.remove('cookme/{}.JPG'.format(fileName))
     
     elif '.png' in fileName:
-        SearchWords = ReadOrderThing(fileName)
+        searchWords = readOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.png', '')
         os.remove('cookme/{}.png'.format(fileName))
 
     elif '.PNG' in fileName:
-        SearchWords = ReadOrderThing(fileName)
+        searchWords = readOrderThing(fileName)
 
         #材料を読み込んだらファイルを削除
         fileName = fileName.replace('.PNG', '')
         os.remove('cookme/{}.PNG'.format(fileName))
 
     else:
-        flash('拡張子が違います', 'message')
-        return redirect(url_for('cookme.Home', userID=userID))
+        flash('拡張子が違います', 'failed')
+        return redirect(url_for('cookme.home', userID=userID))
 
 
     #ファイルを削除
+    
     if os.path.exists('cookme/{}_drawcont.jpg'.format(fileName)) == True:
         os.remove('cookme/{}_drawcont.jpg'.format(fileName))
     
@@ -105,11 +140,10 @@ def SearchOrderThing(userID, fileName):
 
     if os.path.exists('cookme/{}_th.jpg'.format(fileName)) == True:
         os.remove('cookme/{}_th.jpg'.format(fileName))
-
     
 
     return render_template('SearchOrderThing.html', userID=userID,
-        OrderThings=SearchWords)
+        orderThings=searchWords)
 
 
 

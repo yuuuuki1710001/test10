@@ -30,15 +30,15 @@ cur.execute('USE cook')
     entry           :   orderthing   --- 入力した材料名
     return          :   recipeTitles --- レシピの検索候補(list型)
 """
-def ingredientsInputs(orderthing, recipeTime):
-    words = re.split('[ 　]', orderthing)
+def ingredientsInputs(orderThing, recipeTime):
+    words = re.split('[ 　]', orderThing)
     print(words)
 
     #レシピ一覧を格納するリストを用意する
     recipeTitles = []
 
     #時間のみが入力された場合
-    if orderthing == '':
+    if orderThing == '':
         cur.execute('SELECT * FROM cookpages WHERE recipeTime <= %s'
                 'AND recipeTime != -1',
                 (recipeTime))
@@ -51,26 +51,26 @@ def ingredientsInputs(orderthing, recipeTime):
     if len(words) == 3:
         #材料から検索
         if recipeTime == -1:
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND OrderThing3 = %s',
                 (words[0], words[1], words[2]))
             searchTitles = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND OrderThing3 = %s',
                 (words[1], words[2], words[0]))
             searchTitles2 = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND OrderThing3 = %s',
                 (words[2], words[0], words[1]))
             searchTitles3 = [row[1] for row in cur.fetchall()]
 
         else:
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND OrderThing3 = %s'
                 'AND recipeTime <= %s'
@@ -78,7 +78,7 @@ def ingredientsInputs(orderthing, recipeTime):
                 (words[0], words[1], words[2], recipeTime))
             searchTitles = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND OrderThing3 = %s'
                 'AND recipeTime <= %s'
@@ -86,7 +86,7 @@ def ingredientsInputs(orderthing, recipeTime):
                 (words[1], words[2], words[0], recipeTime))
             searchTitles2 = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND OrderThing3 = %s'
                 'AND recipeTime <= %s'
@@ -120,12 +120,12 @@ def ingredientsInputs(orderthing, recipeTime):
     #材料名が2つ入力された場合
     elif len(words) == 2:
         if recipeTime == -1:
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s',
                 (words[0], words[1]))
             searchTitles = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s',
                 (words[1], words[0]))
             searchTitles2 = [row[1] for row in cur.fetchall()]
@@ -140,25 +140,25 @@ def ingredientsInputs(orderthing, recipeTime):
                 (words[1], words[0]))
             searchTitles4 = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing3 = %s',
                 (words[0], words[1]))
             searchTitles5 = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing3 = %s',
                 (words[1], words[0]))
             searchTitles6 = [row[1] for row in cur.fetchall()]
 
         else:
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND recipeTime <= %s'
                 'AND recipeTime != -1',
                 (words[0], words[1], recipeTime))
             searchTitles = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing2 = %s'
                 'AND recipeTime <= %s'
                 'AND recipeTime != -1',
@@ -179,14 +179,14 @@ def ingredientsInputs(orderthing, recipeTime):
                 (words[1], words[0], recipeTime))
             searchTitles4 = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing3 = %s'
                 'AND recipeTime <= %s'
                 'AND recipeTime != -1',
                 (words[0], words[1], recipeTime))
             searchTitles5 = [row[1] for row in cur.fetchall()]
 
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND OrderThing3 = %s'
                 'AND recipeTime <= %s'
                 'AND recipeTime != -1',
@@ -222,7 +222,7 @@ def ingredientsInputs(orderthing, recipeTime):
     #材料名が1つの場合
     elif len(words) == 1:
         if recipeTime == -1:
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s',
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s',
                 (words[0]))
             searchTitles = [row[1] for row in cur.fetchall()]
 
@@ -235,7 +235,7 @@ def ingredientsInputs(orderthing, recipeTime):
             searchTitles3 = [row[1] for row in cur.fetchall()]
 
         else:
-            cur.execute('SELECT * FROM cookpages WHERE orderthing = %s'
+            cur.execute('SELECT * FROM cookpages WHERE OrderThing = %s'
                 'AND recipeTime <= %s'
                 'AND recipeTime != -1',
                 (words[0], recipeTime))

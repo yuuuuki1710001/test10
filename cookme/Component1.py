@@ -9,7 +9,7 @@ from flask import *
 from werkzeug.exceptions import BadRequestKeyError
 import pymysql
 from cookme.Component3 import ingredientsInputs
-from cookme.Component4 import selectURL, recipeDisplay
+from cookme.Component4 import selectURL, RecipeDisplay
 from cookme.Component5 import favoriteRegister, favoriteDelete, favoriteDisplay
 from cookme.Component6 import historyDisplay, historyRegister
 
@@ -54,24 +54,24 @@ def home(userID):
 """
 @cookme.route('/SearchResult/<userID>', methods=['POST'])
 def searchResult(userID):
-    orderthing = request.form['orderthing']           #材料名
+    orderThing = request.form['orderThing']           #材料名
     recipeTime = request.form['recipeTime']           #調理時間
 
     #材料名も調理時間も入力されていないとき
-    if not orderthing and not recipeTime:
+    if not orderThing and not recipeTime:
         session.clear()
         flash('材料名か調理時間を入力してください', 'failed')
         return redirect(url_for('cookme.home', userID=userID))
 
     #材料名が入力されていないとき
-    if not orderthing:
-        orderthing = ''
+    if not orderThing:
+        orderThing = ''
 
     #調理時間が入力されていないとき
     if not recipeTime:
         recipeTime = -1
 
-    recipeTitles = ingredientsInputs(orderthing, recipeTime) #レシピの検索候補
+    recipeTitles = ingredientsInputs(orderThing, recipeTime) #レシピの検索候補
     return render_template('SearchResult.html', userID=userID, recipeTitles=recipeTitles) #SearchResult.htmlを読み込む
 
 
@@ -93,17 +93,18 @@ def recipeDisplay(userID):
 
     #お気に入りのレシピを削除する
     try:
-        recipeTitle = request.form['submit_button'] #お気に入りのレシピタイトル
+        recipeTitle = request.form['submitButton'] #お気に入りのレシピタイトル
         return redirect(url_for('cookme.favoriteDeletion', userID=userID, recipeTitle=recipeTitle)) #FavoriteDeletionメソッドに飛ぶ
 
     #レシピの内容を取得する
     except BadRequestKeyError:
         recipeTitle = request.form['recipeTitle']                                #レシピタイトル
-        print(recipeTitle)
-        orderthing, recipeTime, recipeToCook = recipeDisplay(recipeTitle)        #材料と調理時間と作り方
+
+        print(recipeTitle + userID)
+        orderThing, recipeTime, recipeToCook = RecipeDisplay(recipeTitle)        #材料と調理時間と作り方
         historyRegister(userID, selectURL(recipeTitle), recipeTitle)             #履歴に格納
         return render_template('RecipeDisplay.html', userID=userID, 
-            recipeTitle=recipeTitle, orderthing=orderthing, recipeTime=recipeTime, 
+            recipeTitle=recipeTitle, orderThing=orderThing, recipeTime=recipeTime, 
             recipeToCook=recipeToCook) #RecipeDisplay.htmlを読み込む
 
 

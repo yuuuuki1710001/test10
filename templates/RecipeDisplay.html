@@ -17,7 +17,7 @@
             <form action="{{ url_for('cookme.favoriteRegistration', userID=userID) }}" method="POST">
                 <h2 class="recipeTitle">{{ recipeTitle }}の作り方</h2>
                 <h3>材料</h3>
-                <p>・ {{ OrderThing }}</p><br>
+                <p>・ {{ orderThing }}</p><br>
 
                 {% if recipeTime != -1 %}
                 <p>調理時間: {{ recipeTime }} 分</p>

@@ -18,10 +18,10 @@
             <form action="{{ url_for('cookme.searchResult', userID=userID) }}" method="POST">
                 <button class="button" type="button" onclick="history.back()">戻る</button><br>
                 <p>読み込むことができた材料名です</p><br>
-                {% if OrderThings == [] %}
+                {% if orderThings == [] %}
                 <p2>材料を読み込むことができませんでした</p2><br>
                 {% else %}
-                {% for OrderThing in OrderThings %}
+                {% for orderThing in orderThings %}
                 <p1>
                     <input type="submit" name="orderThing" value="{{ orderThing }}"><br>
                 </p1>
