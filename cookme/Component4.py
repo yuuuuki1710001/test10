@@ -42,7 +42,7 @@ def selectURL(recipeTitle):
     Designer        :   野田啓介, 續航希
     Function        :   レシピの材料と調理時間と作り方を返す
     entry           :   recipeTitle     --- レシピのタイトル
-    return          :   orderthing      --- 検索したレシピの材料名
+    return          :   orderThing      --- 検索したレシピの材料名
                         recipiTime      --- 検索したレシピの調理時間
                         recipiToCook    --- 検索したレシピの作り方
 
@@ -57,10 +57,10 @@ def recipeDisplay(recipeTitle):
         soup = BeautifulSoup(html, 'html.parser')
 
         #材料
-        orderthing = ''
+        orderThing = ''
         for Stuff, quantity in zip(soup.findAll('span', {'class':'ingredient-name'}),
             soup.findAll('span', {'class':'ingredient-quantity-amount'})):
-            orderthing += Stuff.get_text() + ' ' + quantity.get_text() + '   '
+            orderThing += Stuff.get_text() + ' ' + quantity.get_text() + '   '
 
         #調理時間
         cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', (recipeTitle))
@@ -72,7 +72,7 @@ def recipeDisplay(recipeTitle):
             recipeToCook += recipe.get_text()
 
         #材料と作り方を返す
-        return orderthing, recipeTime, recipeToCook
+        return orderThing, recipeTime, recipeToCook
 
     #cookpad
     elif re.search(r'^/recipe/', recipeURL):
@@ -81,13 +81,13 @@ def recipeDisplay(recipeTitle):
 
         #材料
         Stuff = soup.findAll('div', {'class':'ingredient_row'})
-        orderthing = ''
+        orderThing = ''
         for stuff in Stuff:
             for foodstu, quan in zip(stuff.findAll('div', {'class':'ingredient_name'}), 
                 stuff.findAll('div', {'class':'ingredient_quantity amount'})):
                 foodstuffText = foodstu.get_text().replace('\n', '')
                 #print(foodstuffText + ' ' + quan.get_text())
-                orderthing += foodstuffText + ' ' + quan.get_text() + '   '
+                orderThing += foodstuffText + ' ' + quan.get_text() + '   '
 
         #調理時間(-1)
         cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
@@ -100,7 +100,7 @@ def recipeDisplay(recipeTitle):
             recipeToCook += recipe.get_text()
         
         #材料と作り方を返す
-        return orderthing, recipeTime, recipeToCook
+        return orderThing, recipeTime, recipeToCook
     
     #DelishKitchen
     elif re.search(r'^/recipes/([0-9])+', recipeURL):
@@ -108,9 +108,9 @@ def recipeDisplay(recipeTitle):
         soup = BeautifulSoup(html, 'html.parser')
 
         #材料
-        orderthing = ''
+        orderThing = ''
         for Stuff in soup.findAll('div', {'class':'ingredient'}):
-            orderthing += Stuff.get_text()
+            orderThing += Stuff.get_text()
 
         #調理時間
         cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
@@ -124,7 +124,7 @@ def recipeDisplay(recipeTitle):
             recipeToCook += recipe.get_text()
 
         #材料と作り方を返す
-        return orderthing, recipeTime, recipeToCook
+        return orderThing, recipeTime, recipeToCook
 
     #レシピ大百科
     else:
@@ -132,9 +132,9 @@ def recipeDisplay(recipeTitle):
         soup = BeautifulSoup(html, 'html.parser')
 
         #材料
-        orderthing = ''
+        orderThing = ''
         for Stuff, Quantity in zip(soup.findAll('dt'), soup.findAll('dd')):
-            orderthing += Stuff.get_text() + ' ' +  Quantity.get_text() + ' '
+            orderThing += Stuff.get_text() + ' ' +  Quantity.get_text() + ' '
 
         #調理時間
         cur.execute('SELECT recipeTime FROM cookpages WHERE recipeTitle = %s', 
@@ -147,4 +147,4 @@ def recipeDisplay(recipeTitle):
             recipeToCook += recipe.get_text()
 
         #材料と作り方を返す
-        return orderthing, recipeTime, recipeToCook
+        return orderThing, recipeTime, recipeToCook
