@@ -23,31 +23,17 @@ cur.execute('USE cook')
 
 
 
-"""
-    FunctionName:   CleanWords
-    Date:           2020/6/26
-    Designer:       鳥居昭吾
-    Function:       入力した材料名を形態素解析する
-    entry:          OrderThing  --- 入力した材料名
-    return:         words       --- 形態素解析した単語ら(list型)
-
-"""
-def CleanWords(OrderThing):
-    words = re.split('[ 　]', OrderThing)
-    return words
-
-
     
 """
     FunctionName:   IngredientsInputs
-    Date:           2020/07/05
-    Designer:
+    Date:           2020/07/21
+    Designer:       鳥居昭吾
     Function:       レシピの検索候補を取得する
     entry:          OrderThing   --- 入力した材料名
     return:         recipeTitles --- レシピの検索候補(list型)
 """
 def IngredientsInputs(OrderThing, recipeTime):
-    words = CleanWords(OrderThing) 
+    words = re.split('[ 　]', OrderThing)
     print(words)
 
     #レシピ一覧を格納するリストを用意する

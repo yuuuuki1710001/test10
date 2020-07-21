@@ -9,7 +9,7 @@ from flask import *
 #from flask_bootstrap import Bootstrap
 from werkzeug.exceptions import BadRequestKeyError
 import pymysql
-from cookme.Component3 import CleanWords, IngredientsInputs
+from cookme.Component3 import IngredientsInputs
 from cookme.Component4 import selectURL, recipeDisplay
 from cookme.Component5 import FavoriteRegister, FavoriteDelete, FavoriteDisplay
 from cookme.Component6 import HistoryDisplay, HistoryRegister
