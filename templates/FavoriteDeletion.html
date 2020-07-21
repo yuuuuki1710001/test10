@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>CookME</title>
-    <link rel = "stylesheet" href = "../../static/FavoriteDeletion.css">
+    <link rel="stylesheet" href="../../static/FavoriteDeletion.css">
 </head>
-<body>
-<div class="bg-mask">
-<center>
-        <h1>
-            <center>CookME</center>
-        </h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class=flashes>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
 
-    <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST">
-        <button class="button" type="submit">戻る</button><br>
-    </form>
-    <form action="{{ url_for('cookme.Home', userID=userID) }}" method="POST">
-        <button class="button" type="submit">Home</button><br>
-    </form>
-</center>
-</div>
+<body>
+    <div class="bg-mask">
+        <center>
+            <h1>
+                <center>CookME</center>
+            </h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('cookme.favorite', userID=userID) }}" method="POST">
+                <button class="button" type="submit">戻る</button><br>
+            </form>
+            <form action="{{ url_for('cookme.home', userID=userID) }}" method="POST">
+                <button class="button" type="submit">Home</button><br>
+            </form>
+        </center>
+    </div>
 </body>
+
 </html>

@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>CookME</title>
-    <link rel = "stylesheet" href = "../static/SearchResult.css">
+    <link rel="stylesheet" href="../static/SearchResult.css">
 </head>
+
 <body>
     <div class="bg-mask">
         <h1>
             <center>CookME</center>
         </h1>
 
-    <center>
-        {% if userID %}
-            <form action="{{ url_for('cookme.Home', userID=userID) }}" method="POST">
+        <center>
+            {% if userID %}
+            <form action="{{ url_for('cookme.home', userID=userID) }}" method="POST">
                 <button class="button" type="submit">戻る</button><br>
             </form>
-            <form action="{{ url_for('cookme.RecipeDisplay', userID=userID) }}" method="POST">
+            <form action="{{ url_for('cookme.recipeDisplay', userID=userID) }}" method="POST">
                 <!--<button class="button" type="button" onclick="history.back()">戻る</button><br>-->
                 <p>検索された条件のレシピ一覧です</p><br>
                 {% if recipeTitles == [] %}
-                    <br><p2>該当レシピなし</p2><br>
+                <br>
+                <p2>該当レシピなし</p2><br>
                 {% else %}
-                    {% for recipeTitle in recipeTitles %}
-                        <p1>
-                            <input type="submit" name="recipeTitle" value="{{ recipeTitle }}">
-                        </p1>
-                    {% endfor %}
+                {% for recipeTitle in recipeTitles %}
+                <p1>
+                    <input type="submit" name="recipeTitle" value="{{ recipeTitle }}">
+                </p1>
+                {% endfor %}
                 {% endif %}
             </form>
-        {% endif %}
-    <br><br>
-    </center>
-</div>
+            {% endif %}
+            <br><br>
+        </center>
+    </div>
 </body>
+
 </html>

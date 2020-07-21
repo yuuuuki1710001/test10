@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>CookME</title>
-    <link rel = "stylesheet" href = "../../static/SearchOrderThing.css">
+    <link rel="stylesheet" href="../../static/SearchOrderThing.css">
 </head>
+
 <body>
-<div class="bg-mask">
+    <div class="bg-mask">
         <h1>
             <center>CookME</center>
         </h1>
 
-    <center>
-        {% if userID %}
-            <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
+        <center>
+            {% if userID %}
+            <form action="{{ url_for('cookme.searchResult', userID=userID) }}" method="POST">
                 <button class="button" type="button" onclick="history.back()">戻る</button><br>
                 <p>読み込むことができた材料名です</p><br>
                 {% if OrderThings == [] %}
-                    <p2>材料を読み込むことができませんでした</p2><br>
+                <p2>材料を読み込むことができませんでした</p2><br>
                 {% else %}
-                    {% for OrderThing in OrderThings %}
-                        <p1>
-                            <input type="submit" name="OrderThing" value="{{ OrderThing }}"><br>
-                        </p1>
-                    {% endfor %}
+                {% for OrderThing in OrderThings %}
+                <p1>
+                    <input type="submit" name="orderThing" value="{{ orderThing }}"><br>
+                </p1>
+                {% endfor %}
                 {% endif %}
                 <p>調理時間を入力してください</p><br>
                 <div>
                     <input type="text" name="recipeTime" placeholder="調理時間">
                 </div>
             </form>
-        {% endif %}
-        <br><br>
-    </center>
-</div>
+            {% endif %}
+            <br><br>
+        </center>
+    </div>
 </body>
+
 </html>

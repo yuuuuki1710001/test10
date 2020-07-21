@@ -4,29 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>CookME</title>
-    <link rel = "stylesheet" href = "..\static\Home.css">
+    <link rel="stylesheet" href="..\static\Home.css">
 </head>
 
 <body class="animation">
-<div class="bg-mask">
-    <center>
-    <h1>CookME</h1>
-        {% if userID %}
+    <div class="bg-mask">
+        <center>
+            <h1>CookME</h1>
+            {% if userID %}
             {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <ul class=flashes>
-                    {% for category, message in messages %}
-                        <li class="{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% endwith %}
 
-            <form action="{{ url_for('cookme.SearchResult', userID=userID) }}" method="POST">
+            <form action="{{ url_for('cookme.searchResult', userID=userID) }}" method="POST">
                 <div>
                     <p>材料名と調理時間を入力してください</p><br>
                     <p2>(調理時間は半角の整数値で入力してください)</p2><br><br>
-                    <input type="text" name="OrderThing" placeholder="材料名">
+                    <input type="text" name="orderThing" placeholder="材料名">
                 </div>
                 <div>
                     <input type="text" name="recipeTime" placeholder="調理時間">
@@ -40,20 +40,21 @@
                 <input type="submit" value="submit">
             </form>
 
-            <form action="{{ url_for('cookme.Favorite', userID=userID) }}" method="POST"><br>
+            <form action="{{ url_for('cookme.favorite', userID=userID) }}" method="POST"><br>
                 <button class="button" type="submit" name="userID" value="{{ userID }}">お気に入りのレシピ一覧</button><br><br>
             </form>
 
-            <form action="{{ url_for('cookme.History', userID=userID) }}" method="POST">
+            <form action="{{ url_for('cookme.history', userID=userID) }}" method="POST">
                 <button class="button" type="submit" name="userID" value="{{ userID }}">履歴</button><br><br>
             </form>
 
             <form action="{{ url_for('user.logout') }}" method="GET">
                 <button class="button" type="submit">logout</button>
             </form>
-        {% endif %}
-    <br><br>
-    </center>
-</div>
+            {% endif %}
+            <br><br>
+        </center>
+    </div>
 </body>
+
 </html>
