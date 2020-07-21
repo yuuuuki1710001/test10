@@ -58,7 +58,7 @@ def upload(userID):
 
         except IsADirectoryError:
             flash('アップロードするファイルを選んでください', 'failed')
-            return redirect(url_for('cookme.Home', userID=userID))
+            return redirect(url_for('cookme.home', userID=userID))
 
         return redirect(url_for('img.searchOrderThing', userID=userID, 
             fileName=f.filename))
