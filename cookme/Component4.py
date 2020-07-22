@@ -52,7 +52,7 @@ def RecipeDisplay(recipeTitle):
     print(recipeURL)
 
     #Kurashiru
-    if re.search(r'^/recipes/(-)+', recipeURL):
+    if re.search(r'^/recipes/[0-9a-f]*(-)+', recipeURL):
         html = urlopen('https://www.kurashiru.com{}'.format(recipeURL))
         soup = BeautifulSoup(html, 'html.parser')
 
