@@ -1,13 +1,13 @@
 """
     C3      :   レシピ検索部
     Date    :   2020/07/21
-    purpose :   レシピの検索一覧を取得
+    Purpose :   レシピの検索一覧を取得
 """
 
-from urllib.request import urlopen #URLを開くためのライブラリ
-from urllib.error import URLError #urllibが投げる例外ライブラリ
-from bs4 import BeautifulSoup #htmlからデータを取得するためのライブラリ
-import pymysql #MySQLのライブラリ
+from urllib.request import urlopen 
+from urllib.error import URLError 
+from bs4 import BeautifulSoup 
+import pymysql 
 import re
 
 #MySQL接続
@@ -27,7 +27,7 @@ cur.execute('USE cook')
     Date            :   2020/07/21
     Designer        :   鳥居昭吾
     Function        :   レシピの検索候補を取得
-    entry           :   orderthing   --- 入力した材料名
+    entry           :   orderThing   --- 入力した材料名
     return          :   recipeTitles --- レシピの検索候補(list型)
 """
 def ingredientsInputs(orderThing, recipeTime):
@@ -98,7 +98,7 @@ def ingredientsInputs(orderThing, recipeTime):
         recipeTitles.extend(searchTitles2)
         recipeTitles.extend(searchTitles3)
 
-        #タイトルから検索
+        #レシピタイトルから検索
         #調理時間が入力されていないとき
         if recipeTime == -1:
             cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
@@ -109,7 +109,7 @@ def ingredientsInputs(orderThing, recipeTime):
                 'AND recipeTime != -1', (recipeTime))
         searchTitlesT = [row[1] for row in cur.fetchall()] #レシピタイトルを取得
 
-        #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+        #材料がレシピタイトルに含んでいる場合
         for recipeTitle in searchTitlesT:
             if (words[0] in recipeTitle) and (words[1] in recipeTitle) and (words[2] in recipeTitle):
                 recipeTitles.append(recipeTitle)
@@ -200,7 +200,7 @@ def ingredientsInputs(orderThing, recipeTime):
         recipeTitles.extend(searchTitles5)
         recipeTitles.extend(searchTitles6)
 
-        #タイトルから検索
+        #レシピタイトルから検索
         #調理時間が入力されていないとき
         if recipeTime == -1:
             cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
@@ -213,7 +213,7 @@ def ingredientsInputs(orderThing, recipeTime):
 
         for recipeTitle in searchTitlesT: 
 
-            #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+            #材料がレシピタイトルに含んでいる場合
             if (words[0] in recipeTitle) and (words[1] in recipeTitle):
                 recipeTitles.append(recipeTitle)
 
@@ -257,7 +257,7 @@ def ingredientsInputs(orderThing, recipeTime):
         recipeTitles.extend(searchTitles2)
         recipeTitles.extend(searchTitles3)
 
-        #タイトルから検索
+        #レシピタイトルから検索
         #調理時間が入力されていないとき
         if recipeTime == -1:
             cur.execute('SELECT * FROM cookpages WHERE recipeTime = -1')
@@ -268,7 +268,7 @@ def ingredientsInputs(orderThing, recipeTime):
                 'AND recipeTime != -1', (recipeTime))
         searchTitlesT = [row[1] for row in cur.fetchall()]
 
-        #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+        #材料がレシピタイトルに含んでいる場合
         for recipeTitle in searchTitlesT:
             if words[0] in recipeTitle:
                 recipeTitles.append(recipeTitle)
@@ -278,7 +278,7 @@ def ingredientsInputs(orderThing, recipeTime):
     #それ以外
     else:
 
-        #タイトルから検索
+        #レシピタイトルから検索
         for word in words:
 
             #調理時間が入力されていないとき
@@ -291,7 +291,7 @@ def ingredientsInputs(orderThing, recipeTime):
                     'AND recipeTime != -1', (recipeTime))
             searchTitlesT = [row[1] for row in cur.fetchall()]
 
-            #MeCabで形態素解析したすべてのワードがレシピタイトルに含んでいる場合
+            #材料がレシピタイトルに含んでいる場合
             for recipeTitle in searchTitlesT:
                 if word in recipeTitle:
                     recipeTitles.append(recipeTitle)

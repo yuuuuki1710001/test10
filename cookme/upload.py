@@ -4,8 +4,6 @@
     purpose :   レシート画像をアップロードする
 """
 
-
-
 import os
 from flask import *
 from flask_dropzone import Dropzone
@@ -29,15 +27,14 @@ with app.app_context():
 
 
 
-
 """
     FunctionName    :   upload
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   レシート画像をアップロードする
-    Entry           :   userID   --- ユーザー名
+    Entry           :   userID   --- ユーザーID
     Return          :   SearchOrderThingメソッドにリダイレクトする
-                        userID   --- ユーザー名
+                        userID   --- ユーザーID
                         fileName --- レシート画像のファイル名
 """
 @img.route('/upload/<userID>', methods=['GET', 'POST'])
@@ -66,7 +63,7 @@ def upload(userID):
 
 
 """
-    FunctionName    :   SearchOrderThing
+    FunctionName    :   searchOrderThing
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   ホーム画面表示
@@ -81,6 +78,7 @@ def searchOrderThing(userID, fileName):
 
     if fileName.count(' ') >= 1:
         flash('ファイル名に空白スペースがあります', 'message')
+        os.remove('cookme/{}'.format(fileName))
         return redirect(url_for('cookme.Home', userID=userID))
 
     if fileName.count('.') >= 2:
@@ -124,10 +122,11 @@ def searchOrderThing(userID, fileName):
 
     else:
         flash('拡張子が違います', 'failed')
+        os.remove('cookme/{}'.format(fileName))
         return redirect(url_for('cookme.home', userID=userID))
 
 
-    #ファイルを削除
+    #レシート画像の関連ファイルを削除
     
     if os.path.exists('cookme/{}_drawcont.jpg'.format(fileName)) == True:
         os.remove('cookme/{}_drawcont.jpg'.format(fileName))

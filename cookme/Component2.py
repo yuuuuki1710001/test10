@@ -1,6 +1,6 @@
 """
     C2      :   認証処理部
-    Data    :   2020/07/16
+    Date    :   2020/07/16
     Purpose :   ログイン処理、新規登録処理、ログアウト処理
 """
 
@@ -17,7 +17,7 @@ user = Blueprint('user', __name__)
     Data            :   2020/07/21
     Designer        :   前原達也
     Function        :   利用者のログイン処理
-    Entry           :   userID      --- 利用者ID
+    Entry           :   userID      --- ユーザーID
                         passWord    --- パスワード
                         ※ 上記の入力はhtmlの入力フォームからの入力
     Return          :   セッションを保存し、利用者のホーム画面に遷移
@@ -64,7 +64,7 @@ def login():
     Data            :   2020/07/21
     Designer        :   前原達也
     Function        :   利用者の新規登録処理
-    Entry           :   userID      --- 利用者ID
+    Entry           :   userID      --- ユーザーID
                         passWord    --- パスワード
                         ※ 上記の入力はhtmlの入力フォームからの入力
     Return          :   データベースに利用者情報を格納し、ログイン画面に遷移

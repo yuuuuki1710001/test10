@@ -1,3 +1,9 @@
+"""
+    DelishKitchen      :   レシピ情報格納処理
+    Date               :   2020/07/16
+    Purpose            :   レシピ情報のデータベース処理
+"""
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pymysql
@@ -14,55 +20,87 @@ cur = conn.cursor()
 cur.execute('USE cook')
 
 
-def insertUrlTitle(recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3):
+"""
+    FunctionName    :   insertUrlTitle
+    Data            :   2020/07/23
+    Designer        :   野田啓介
+    Function        :   レシピの情報をcookpagesテーブルに格納する
+    Entry           :   recipeUrl   --- レシピのURL
+                    :   recipeTitle --- レシピタイトル
+                    :   recipeTime  --- 調理時間
+                    :   orderThing  --- 材料
+                    :   orderThing2 --- 材料
+                    :   orderThing3 --- 材料
+    Return          :   なし
+"""
+def insertUrlTitle(recipeUrl, recipeTitle, recipeTime, orderThing, orderThing2, orderThing3):
 
-    #データベースに格納している内容を取得する
+    #データベースに格納しているレシピの情報を取得する
     cur.execute('SELECT * FROM cookpages WHERE recipeURL = %s'
         'AND recipeTitle = %s'
         'AND recipeTime = %s', 
-        (recipeURL, recipeTitle, recipeTime))
+        (recipeUrl, recipeTitle, recipeTime))
 
-    #取得した数が0の場合はurlとタイトル名をデータベースに格納する
+    #取得した数が0の場合はレシピのURL, レシピタイトル, 調理時間, 材料(3つ)をデータベースに格納する
     if cur.rowcount == 0:
         cur.execute('INSERT INTO cookpages (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3)' 
-        'VALUES (%s, %s, %s, %s, %s, %s)', (recipeURL, recipeTitle, recipeTime, OrderThing, OrderThing2, OrderThing3))
+        'VALUES (%s, %s, %s, %s, %s, %s)', (recipeUrl, recipeTitle, recipeTime, orderThing, orderThing2, orderThing3))
 
         #格納した情報を保存する
         conn.commit()
 
-#recipeURLをリストに格納する
+
+"""
+    FunctionName    :   loadPages
+    Data            :   2020/07/23
+    Designer        :   野田啓介
+    Function        :   cookpagesテーブルに格納されているレシピのURLをリスト(pages)で格納する
+    Entry           :   なし
+    Return          :   pages --- cookpagesテーブルに格納されているレシピのURL(list型)
+"""
 def loadPages():
     cur.execute('SELECT * FROM cookpages')
     pages = [row[0] for row in cur.fetchall()]
     return pages
 
-#レシピの検索一覧とレシピを交互にたどってクローリングする
-def getLinks(pageURL, level, pages, pageURLs):
 
-    #深さを9までとする
+"""
+    FunctionName    :   getLinks
+    Data            :   2020/07/23
+    Designer        :   野田啓介
+    Function        :   レシピの情報をクローリングする
+    Entry           :   pageUrl  --- 検索ワードのURL
+                    :   level    --- クローリングする深さ
+                    :   pages    --- cookpagesテーブルに格納されているレシピのURL(list型)
+                    :   pageUrls --- クローリングする際に, 一度たどった検索ワードのURLをリストに格納する(list型)
+    Return          :   なし
+"""
+def getLinks(pageUrl, level, pages, pageUrls):
+
+    #クローリングする深さを9までにする
     if level > 9:
         return
     
 
-    #DelishKitchenのレシピ検索候補ページのURLをオープンする
-    html = urlopen('https://delishkitchen.tv{}'.format(pageURL))
+    #DelishKitchenのレシピ検索ワードのURLをオープンする
+    html = urlopen('https://delishkitchen.tv{}'.format(pageUrl))
     soup = BeautifulSoup(html, 'html.parser')
 
     #URLオープンしたhtmlファイルからレシピのリンクを全て探す
-    #それらをリストに格納する
-    recipeURLs = soup.findAll('a', href=re.compile('/recipes/[0-9]*'))
-    recipeURLs = [recipeURL.attrs['href'] for recipeURL in recipeURLs]
+    #それらをリスト(recipeUrls)に格納する
+    recipeUrls = soup.findAll('a', href=re.compile('/recipes/[0-9]*'))
+    recipeUrls = [recipeUrl.attrs['href'] for recipeUrl in recipeUrls]
 
-    #リストに格納したレシピをfor文で1つ1つ調べる
-    for recipeURL in recipeURLs:
-        if recipeURL in pages:
+    #リスト(recipeUrls)に格納したレシピをfor文で1つ1つ調べる
+    for recipeUrl in recipeUrls:
+        if recipeUrl in pages:
             continue
         
-        pages.append(recipeURL)
+        pages.append(recipeUrl)
 
         #レシピのURLをオープンする
-        linkhtml = urlopen('https://delishkitchen.tv{}'.format(recipeURL))
-        bs = BeautifulSoup(linkhtml, 'html.parser')
+        linkHtml = urlopen('https://delishkitchen.tv{}'.format(recipeUrl))
+        bs = BeautifulSoup(linkHtml, 'html.parser')
 
         #レシピのタイトル名を取得する
         try:
@@ -85,43 +123,42 @@ def getLinks(pageURL, level, pages, pageURLs):
             recipeTime = -1
         
         #レシピの材料を取得する
-        OrderThings = []
-        for OrderThing in bs.findAll('div', {'class':'ingredient'}):
+        orderThings = []
+        for orderThing in bs.findAll('div', {'class':'ingredient'}):
             try: #aタグから取得
-                OrderThing = OrderThing.find('a').get_text()
+                orderThing = orderThing.find('a').get_text()
             except AttributeError: #spanタグから取得
-                OrderThing = OrderThing.find('span').get_text()
+                orderThing = orderThing.find('span').get_text()
 
-            OrderThing = re.sub(r'☆|★|＊|〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', OrderThing)
-            OrderThing = OrderThing.strip(string.punctuation + string.whitespace)
-            OrderThings.append(OrderThing)
-            if len(OrderThings) > 4:
+            orderThing = re.sub(r'☆|★|＊|〇|◎|●|○|■|□|◇|◆|△|▲|▽|▼|⊿|♪|♩|♫|♬|~', '', orderThing)
+            orderThing = orderThing.strip(string.punctuation + string.whitespace)
+            orderThings.append(orderThing)
+            if len(orderThings) > 4:
                 break
         
-        while len(OrderThings) < 4:
-            OrderThings.append('None')
+        while len(orderThings) < 4:
+            orderThings.append('None')
 
-        #レシピのURLとタイトルと調理時間をデータベースに格納する
-        insertUrlTitle(recipeURL, recipeTitle, recipeTime, 
-            OrderThings[0], OrderThings[1], OrderThings[2])
+        #レシピのURL, レシピタイトル, 調理時間, 材料(3つ)をデータベースに格納する
+        insertUrlTitle(recipeUrl, recipeTitle, recipeTime, 
+            orderThings[0], orderThings[1], orderThings[2])
 
-        #レシピのサイトの関連ワードのURLを全て見つける
-        foodStuffLinks = bs.find('div', {'class':'content'})
-        foodStuffLinks = foodStuffLinks.findAll('a', href=re.compile('/categories/[0-9]*'))
-        foodStuffLinks = [foodStuffLink.attrs['href'] for foodStuffLink in foodStuffLinks]
+        #レシピのページの関連ワード(検索ワード)のURLを全て見つける
+        orderThingUrls = bs.find('div', {'class':'content'})
+        orderThingUrls = orderThingUrls.findAll('a', href=re.compile('/categories/[0-9]*'))
+        orderThingUrls = [orderThingUrl.attrs['href'] for orderThingUrl in orderThingUrls]
 
-        for foodStuffLink in foodStuffLinks:
+        for orderThingUrl in orderThingUrls:
 
-            #一度クローリングした関連ワードのURLは無視する
-            #まだクローリングしていない関連ワードのURLをpageURLリストに格納する
-            if foodStuffLink in pageURLs:
+            #一度たどった検索ワードのURLはもうたどらない
+            if orderThingUrl in pageUrls:
                 continue
-            pageURLs.append(foodStuffLink)
+            pageUrls.append(orderThingUrl)
 
             #上記の内容を繰り返す
-            getLinks(foodStuffLink, level+1, pages, pageURLs)
+            getLinks(orderThingUrl, level+1, pages, pageUrls)
 
-#検索候補ページ(材料)を野菜からクローリングする(材料はなんでもいい)
+#今回は検索ワードを豚肉からクローリングすることにする
 getLinks('/categories/458', 0, loadPages(), [])
 cur.close()
 conn.close()

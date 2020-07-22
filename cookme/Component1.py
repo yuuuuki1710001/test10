@@ -1,7 +1,7 @@
 """
     C1      :   UI処理部
     Date    :   2020/07/21
-    purpose :   ホーム画面, 検索結果画面, お気に入り登録画面, お気に入り表示画面,お気に入り削除画面, 履歴画面, レシピ表示画面を表示する
+    Purpose :   ホーム画面, 検索結果画面, お気に入り登録画面, お気に入り表示画面,お気に入り削除画面, 履歴画面, レシピ表示画面を表示する
 """
 
 from flask import *
@@ -32,9 +32,9 @@ cookme = Blueprint('cookme', __name__)
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   ホーム画面表示
-    Entry           :   userID  --- ユーザー名
+    Entry           :   userID  --- ユーザーID
     Return          :   ホーム画面に遷移
-                        userID  --- ユーザー名
+                        userID  --- ユーザーID
 """
 @cookme.route('/Home/<userID>', methods=['GET', 'POST'])
 def home(userID):
@@ -47,7 +47,7 @@ def home(userID):
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   レシピ検索候補画面表示
-    Entry           :   userID          --- ユーザー名
+    Entry           :   userID          --- ユーザーID
     Return          :   レシピ候補画面へ遷移
                         userID          --- ユーザーID
                         recipeTitles    --- 検索候補のレシピタイトル(list型)
@@ -80,11 +80,11 @@ def searchResult(userID):
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   各レシピ表示画面表示
-    Entry           :   userID          --- ユーザー名
+    Entry           :   userID          --- ユーザーID
     Return          :   各レシピ画面への遷移
                         userID          --- ユーザーID
                         recipeTitle     --- レシピタイトル(str型)
-                        orderthing      --- 材料名
+                        orderThing      --- 材料
                         recipeTime      --- 調理時間
                         recipeToCook    --- 作り方
 """
@@ -113,7 +113,7 @@ def recipeDisplay(userID):
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   お気に入り表示画面の表示
-    Entry           :   userID       --- ユーザー名
+    Entry           :   userID       --- ユーザーID
     Return          :   お気に入り画面に遷移
                         userID       --- ユーザーID
                         recipeTitles --- お気に入りのレシピタイトル(list型)
@@ -129,7 +129,7 @@ def favorite(userID):
     Data            :   2020/07/21
     Designer        :   野田啓介
     Function        :   お気に入り登録処理画面の表示
-    Entry           :   userID  --- ユーザー名
+    Entry           :   userID  --- ユーザーID
     Return          :   お気に入り処理後のメッセージ出力画面に遷移
 """
 @cookme.route('/FavoriteRegistration/<userID>', methods=['POST'])
@@ -155,7 +155,7 @@ def favoriteRegistration(userID):
     Data            :   2020/07/04
     Designer        :   野田啓介
     Function        :   お気に入り削除処理
-    Entry           :   userID --- ユーザー名
+    Entry           :   userID --- ユーザーID
     Return          :   FavoriteDelete.htmlを読み込む
                         userID --- ユーザーID
                         recipeTitles --- 検索候補のレシピタイトル(list型)
@@ -172,10 +172,10 @@ def favoriteDeletion(userID, recipeTitle):
     Data            :   2020/07/04
     Designer        :   野田啓介
     Function        :   履歴処理
-    Entry           :   userID --- ユーザー名
+    Entry           :   userID --- ユーザーID
     Return          :   SearchResult.htmlを読み込む
                         userID        --- ユーザーID
-                        HistoryTitles --- 検索候補のレシピタイトル(list型)
+                        historyTitles --- 検索候補のレシピタイトル(list型)
 """
 @cookme.route('/History/<userID>', methods=('GET', 'POST'))
 def history(userID):
