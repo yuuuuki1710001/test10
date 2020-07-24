@@ -1,3 +1,9 @@
+"""
+    app     :   C1, C2, upload接続処理
+    Date    :   2020/07/21
+    Purpose :   C1, C2, uploadをBlueprintで接続する
+"""
+
 import os
 from flask import Flask
 from cookme import Component1, Component2, upload

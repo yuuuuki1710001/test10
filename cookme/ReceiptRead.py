@@ -1,3 +1,9 @@
+"""
+    ReceiptRead     :   画像読み込み処理
+    Date            :   2020/07/21
+    Purpose         :   元のレシート画像から必要な情報(エッジ検出やトリミングした画像)を抜き取る
+"""
+
 import numpy as np
 import os
 import glob

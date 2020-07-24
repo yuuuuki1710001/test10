@@ -1,3 +1,9 @@
+"""
+    ReceiptCook     :   画像文字認識処理
+    Date            :   2020/07/21
+    Purpose         :   レシート画像から読み込まれた材料を取得
+"""
+
 import numpy as np
 import os
 import cv2
