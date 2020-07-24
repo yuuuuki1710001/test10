@@ -77,13 +77,13 @@ def upload(userID):
 def searchOrderThing(userID, fileName):
 
     if fileName.count(' ') >= 1:
-        flash('ファイル名に空白スペースがあります', 'message')
+        flash('ファイル名に空白スペースがあります', 'failed')
         os.remove('cookme/{}'.format(fileName))
-        return redirect(url_for('cookme.Home', userID=userID))
+        return redirect(url_for('cookme.home', userID=userID))
 
     if fileName.count('.') >= 2:
-        flash('ファイル名にドット(.)が2つ以上あります', 'message')
-        return redirect(url_for('cookme.Home', userID=userID))
+        flash('ファイル名にドット(.)が2つ以上あります', 'failed')
+        return redirect(url_for('cookme.home', userID=userID))
     
     if '.jpg' in fileName:
         searchWords = readOrderThing(fileName)
